@@ -2,13 +2,13 @@
 
 <!-- PROJECT SHIELDS -->
 [![Contributors][contributors-shield]](https://github.com/DhiaGhouma)
-[![LinkedIn][linkedin-shield]][[linkedin-url](https://www.linkedin.com/in/dhia-ghouma-725ab4212/)]
+[![LinkedIn][linkedin-shield]][linkedin-url](https://www.linkedin.com/in/dhia-ghouma-725ab4212/)
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="https://github.com/ayari-khalil/nutrition-semantic">
-    <img src="C:\Users\DELL\nutrition-semantic-web\nutrtionGo-removebg-preview.png" alt="Logo" width="80" height="80">
+<img src="./nutrtionGo-removebg-preview.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Nutrition AI Semantic Web Application</h3>
