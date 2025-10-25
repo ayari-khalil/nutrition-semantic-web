@@ -12,7 +12,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/ayari-khalil/nutrition-semantic">
-<img src="./nutrtionGo-removebg-preview.png" alt="Logo" width="280" height="280">
+<img src="./nutrtionGo-removebg-preview.png" alt="Logo" width="480" height="480">
   </a>
 
   <h3 align="center">Nutrition AI Semantic Web Application</h3>
