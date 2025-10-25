@@ -1,7 +1,7 @@
 <a id="readme-top"></a>
 
 <!-- PROJECT SHIELDS -->
-[![Contributors][contributors-shield]][[contributors-url](https://github.com/DhiaGhouma)]
+[![Contributors][contributors-shield]](https://github.com/DhiaGhouma)
 [![LinkedIn][linkedin-shield]][[linkedin-url](https://www.linkedin.com/in/dhia-ghouma-725ab4212/)]
 
 <!-- PROJECT LOGO -->
