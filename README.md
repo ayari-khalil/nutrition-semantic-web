@@ -1,8 +1,12 @@
 <a id="readme-top"></a>
-
 <!-- PROJECT SHIELDS -->
 [![Contributors][contributors-shield]](https://github.com/DhiaGhouma)
-[![LinkedIn][linkedin-shield]][linkedin-url](https://www.linkedin.com/in/dhia-ghouma-725ab4212/)
+[![LinkedIn][linkedin-shield]](https://www.linkedin.com/in/dhia-ghouma-725ab4212/)
+
+<!-- SHIELD LINKS -->
+[contributors-shield]: https://img.shields.io/badge/Contributors-1-orange
+[linkedin-shield]: https://img.shields.io/badge/LinkedIn-Profile-blue?logo=linkedin&logoColor=white
+
 
 <!-- PROJECT LOGO -->
 <br />
