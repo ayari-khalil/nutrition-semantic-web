@@ -11,8 +11,8 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/yourusername/nutrition-semantic-web">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/ayari-khalil/nutrition-semantic">
+    <img src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/nutrition/nutrition.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Nutrition AI Semantic Web Application</h3>
@@ -20,14 +20,14 @@
   <p align="center">
     An intelligent nutrition and wellness recommendation system powered by AI, OWL ontologies, and SPARQL queries!
     <br />
-    <a href="https://github.com/yourusername/nutrition-semantic-web"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/ayari-khalil/nutrition-semantic"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/yourusername/nutrition-semantic-web">View Demo</a>
+    <a href="https://github.com/ayari-khalil/nutrition-semantic">View Demo</a>
     ·
-    <a href="https://github.com/yourusername/nutrition-semantic-web/issues">Report Bug</a>
+    <a href="https://github.com/ayari-khalil/nutrition-semantic/issues">Report Bug</a>
     ·
-    <a href="https://github.com/yourusername/nutrition-semantic-web/issues">Request Feature</a>
+    <a href="https://github.com/ayari-khalil/nutrition-semantic/issues">Request Feature</a>
   </p>
 </div>
 
@@ -62,8 +62,6 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-[![Nutrition AI Screen Shot][product-screenshot]](https://example.com)
 
 **Nutrition AI Semantic Web Application** is an innovative system that combines artificial intelligence with semantic web technologies to provide personalized nutrition recommendations. The application uses natural language processing to convert user questions into SPARQL queries, executing them against an OWL ontology to deliver intelligent, context-aware nutrition insights.
 
@@ -140,8 +138,8 @@ Before you begin, ensure you have the following installed:
 
 #### 1. Clone the repository
 ```sh
-git clone https://github.com/yourusername/nutrition-semantic-web.git
-cd nutrition-semantic-web
+git clone https://github.com/ayari-khalil/nutrition-semantic.git
+cd nutrition-semantic
 ```
 
 #### 2. Set up Apache Jena Fuseki
@@ -290,7 +288,7 @@ curl -X POST http://localhost:5000/sparql \
 }
 ```
 
-_For more examples, please refer to the [API Documentation](https://github.com/yourusername/nutrition-semantic-web/wiki)_
+_For more examples, please refer to the [API Documentation](https://github.com/ayari-khalil/nutrition-semantic/wiki)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -396,7 +394,7 @@ Execute a direct SPARQL query.
 - [ ] Export results to PDF/CSV
 - [ ] Voice input support
 
-See the [open issues](https://github.com/yourusername/nutrition-semantic-web/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/ayari-khalil/nutrition-semantic/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -426,9 +424,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Dhia Ghouma - [LinkedIn](https://www.linkedin.com/in/dhia-ghouma-725ab4212/) - ghoumadhia01@gmail.com
 
-Project Link: [https://github.com/yourusername/nutrition-semantic-web](https://github.com/yourusername/nutrition-semantic-web)
+Project Link: [https://github.com/ayari-khalil/nutrition-semantic](https://github.com/ayari-khalil/nutrition-semantic)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -450,19 +448,18 @@ Resources and tools that made this project possible:
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[contributors-shield]: https://img.shields.io/github/contributors/yourusername/nutrition-semantic-web.svg?style=for-the-badge
-[contributors-url]: https://github.com/yourusername/nutrition-semantic-web/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/yourusername/nutrition-semantic-web.svg?style=for-the-badge
-[forks-url]: https://github.com/yourusername/nutrition-semantic-web/network/members
-[stars-shield]: https://img.shields.io/github/stars/yourusername/nutrition-semantic-web.svg?style=for-the-badge
-[stars-url]: https://github.com/yourusername/nutrition-semantic-web/stargazers
-[issues-shield]: https://img.shields.io/github/issues/yourusername/nutrition-semantic-web.svg?style=for-the-badge
-[issues-url]: https://github.com/yourusername/nutrition-semantic-web/issues
-[license-shield]: https://img.shields.io/github/license/yourusername/nutrition-semantic-web.svg?style=for-the-badge
-[license-url]: https://github.com/yourusername/nutrition-semantic-web/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/ayari-khalil/nutrition-semantic.svg?style=for-the-badge
+[contributors-url]: https://github.com/ayari-khalil/nutrition-semantic/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/ayari-khalil/nutrition-semantic.svg?style=for-the-badge
+[forks-url]: https://github.com/ayari-khalil/nutrition-semantic/network/members
+[stars-shield]: https://img.shields.io/github/stars/ayari-khalil/nutrition-semantic.svg?style=for-the-badge
+[stars-url]: https://github.com/ayari-khalil/nutrition-semantic/stargazers
+[issues-shield]: https://img.shields.io/github/issues/ayari-khalil/nutrition-semantic.svg?style=for-the-badge
+[issues-url]: https://github.com/ayari-khalil/nutrition-semantic/issues
+[license-shield]: https://img.shields.io/github/license/ayari-khalil/nutrition-semantic.svg?style=for-the-badge
+[license-url]: https://github.com/ayari-khalil/nutrition-semantic/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/yourprofile
-[product-screenshot]: images/screenshot.png
+[linkedin-url]: https://www.linkedin.com/in/dhia-ghouma-725ab4212/
 
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
