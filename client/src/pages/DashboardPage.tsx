@@ -4,7 +4,6 @@ import {
   Box,
   Typography,
   Paper,
-  Grid,
   Card,
   CardContent,
   Avatar,
@@ -16,7 +15,6 @@ import {
   Restaurant as RestaurantIcon,
   FitnessCenter as FitnessCenterIcon,
   TrendingUp as TrendingUpIcon,
-  Warning as WarningIcon
 } from '@mui/icons-material';
 import axios from 'axios';
 
@@ -38,7 +36,6 @@ function DashboardPage() {
   const loadDashboardData = async () => {
     setLoading(true);
     try {
-      // Get total users
       const usersResponse = await axios.post(`${API_BASE_URL}/api/query/sparql`, {
         query: `
           PREFIX ex: <http://www.semanticweb.org/gigabytei5/ontologies/2025/9/untitled-ontology-5#>
@@ -49,7 +46,6 @@ function DashboardPage() {
         `
       });
 
-      // Get total foods
       const foodsResponse = await axios.post(`${API_BASE_URL}/api/query/sparql`, {
         query: `
           PREFIX ex: <http://www.semanticweb.org/gigabytei5/ontologies/2025/9/untitled-ontology-5#>
@@ -60,7 +56,6 @@ function DashboardPage() {
         `
       });
 
-      // Get total recipes
       const recipesResponse = await axios.post(`${API_BASE_URL}/api/query/sparql`, {
         query: `
           PREFIX ex: <http://www.semanticweb.org/gigabytei5/ontologies/2025/9/untitled-ontology-5#>
@@ -71,7 +66,6 @@ function DashboardPage() {
         `
       });
 
-      // Get total activities
       const activitiesResponse = await axios.post(`${API_BASE_URL}/api/query/sparql`, {
         query: `
           PREFIX ex: <http://www.semanticweb.org/gigabytei5/ontologies/2025/9/untitled-ontology-5#>
@@ -105,6 +99,8 @@ function DashboardPage() {
 
   const StatCard: React.FC<StatCardProps> = ({ title, value, icon, color, bgColor }) => (
     <Card sx={{ 
+      flex: '1 1 200px',
+      minWidth: 200,
       height: '100%',
       background: `linear-gradient(135deg, ${bgColor} 0%, ${color} 100%)`,
       color: 'white',
@@ -124,11 +120,7 @@ function DashboardPage() {
               {title}
             </Typography>
           </Box>
-          <Avatar sx={{ 
-            width: 64, 
-            height: 64, 
-            bgcolor: 'rgba(255,255,255,0.2)' 
-          }}>
+          <Avatar sx={{ width: 64, height: 64, bgcolor: 'rgba(255,255,255,0.2)' }}>
             {icon}
           </Avatar>
         </Box>
@@ -148,233 +140,57 @@ function DashboardPage() {
           </Typography>
         </Box>
 
-        {/* Statistics Cards */}
-        <Grid container spacing={3} sx={{ mb: 4 }}>
-          <Grid item xs={12} sm={6} md={3}>
-            <StatCard
-              title="Total Users"
-              value={stats.totalUsers}
-              icon={<PersonIcon sx={{ fontSize: 32 }} />}
-              color="#667eea"
-              bgColor="#764ba2"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <StatCard
-              title="Foods Available"
-              value={stats.totalFoods}
-              icon={<RestaurantIcon sx={{ fontSize: 32 }} />}
-              color="#f093fb"
-              bgColor="#f5576c"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <StatCard
-              title="Recipes"
-              value={stats.totalRecipes}
-              icon={<RestaurantIcon sx={{ fontSize: 32 }} />}
-              color="#4facfe"
-              bgColor="#00f2fe"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <StatCard
-              title="Physical Activities"
-              value={stats.totalActivities}
-              icon={<FitnessCenterIcon sx={{ fontSize: 32 }} />}
-              color="#43e97b"
-              bgColor="#38f9d7"
-            />
-          </Grid>
-        </Grid>
+        {/* Statistics Cards using Flexbox */}
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3, mb: 4 }}>
+          <StatCard title="Total Users" value={stats.totalUsers} icon={<PersonIcon sx={{ fontSize: 32 }} />} color="#667eea" bgColor="#764ba2" />
+          <StatCard title="Foods Available" value={stats.totalFoods} icon={<RestaurantIcon sx={{ fontSize: 32 }} />} color="#f093fb" bgColor="#f5576c" />
+          <StatCard title="Recipes" value={stats.totalRecipes} icon={<RestaurantIcon sx={{ fontSize: 32 }} />} color="#4facfe" bgColor="#00f2fe" />
+          <StatCard title="Physical Activities" value={stats.totalActivities} icon={<FitnessCenterIcon sx={{ fontSize: 32 }} />} color="#43e97b" bgColor="#38f9d7" />
+        </Box>
 
         {/* Recent Activity Section */}
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 3, height: '100%' }}>
-              <Typography variant="h5" fontWeight="bold" gutterBottom>
-                System Health
-              </Typography>
-              <Box sx={{ mt: 3 }}>
-                <Box sx={{ mb: 3 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+          <Paper sx={{ flex: '1 1 400px', p: 3, minHeight: 300 }}>
+            <Typography variant="h5" fontWeight="bold" gutterBottom>
+              System Health
+            </Typography>
+            <Box sx={{ mt: 3 }}>
+              {['Backend API','Fuseki Server','Ontology Loaded','AI Model'].map((label, idx) => (
+                <Box key={idx} sx={{ mb: 3 }}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                    <Typography variant="body2">Backend API</Typography>
+                    <Typography variant="body2">{label}</Typography>
                     <Chip label="Online" color="success" size="small" />
                   </Box>
                   <LinearProgress variant="determinate" value={100} color="success" />
                 </Box>
-                
-                <Box sx={{ mb: 3 }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                    <Typography variant="body2">Fuseki Server</Typography>
-                    <Chip label="Connected" color="success" size="small" />
-                  </Box>
-                  <LinearProgress variant="determinate" value={100} color="success" />
-                </Box>
-                
-                <Box sx={{ mb: 3 }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                    <Typography variant="body2">Ontology Loaded</Typography>
-                    <Chip label="Active" color="success" size="small" />
-                  </Box>
-                  <LinearProgress variant="determinate" value={100} color="success" />
-                </Box>
-                
-                <Box>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                    <Typography variant="body2">AI Model</Typography>
-                    <Chip label="Ready" color="success" size="small" />
-                  </Box>
-                  <LinearProgress variant="determinate" value={100} color="success" />
-                </Box>
-              </Box>
-            </Paper>
-          </Grid>
+              ))}
+            </Box>
+          </Paper>
 
-          <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 3, height: '100%' }}>
-              <Typography variant="h5" fontWeight="bold" gutterBottom>
-                Quick Actions
-              </Typography>
-              <Box sx={{ mt: 3 }}>
-                <Card sx={{ 
-                  mb: 2, 
-                  cursor: 'pointer',
-                  '&:hover': { bgcolor: '#f5f5f5' }
-                }}>
+          <Paper sx={{ flex: '1 1 400px', p: 3, minHeight: 300 }}>
+            <Typography variant="h5" fontWeight="bold" gutterBottom>
+              Quick Actions
+            </Typography>
+            <Box sx={{ mt: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
+              {[
+                {title: 'Add New User', icon: <PersonIcon />, color: '#667eea', subtitle: 'Create a new user profile'},
+                {title: 'Add Food Item', icon: <RestaurantIcon />, color: '#f5576c', subtitle: 'Register new food in database'},
+                {title: 'View Analytics', icon: <TrendingUpIcon />, color: '#00f2fe', subtitle: 'Check nutrition trends'},
+                {title: 'Track Activities', icon: <FitnessCenterIcon />, color: '#38f9d7', subtitle: 'Log physical activities'}
+              ].map((action, idx) => (
+                <Card key={idx} sx={{ cursor: 'pointer', '&:hover': { bgcolor: '#f5f5f5' } }}>
                   <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Avatar sx={{ bgcolor: '#667eea' }}>
-                      <PersonIcon />
-                    </Avatar>
+                    <Avatar sx={{ bgcolor: action.color }}>{action.icon}</Avatar>
                     <Box>
-                      <Typography variant="body1" fontWeight="bold">
-                        Add New User
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        Create a new user profile
-                      </Typography>
+                      <Typography variant="body1" fontWeight="bold">{action.title}</Typography>
+                      <Typography variant="caption" color="text.secondary">{action.subtitle}</Typography>
                     </Box>
                   </CardContent>
                 </Card>
-
-                <Card sx={{ 
-                  mb: 2, 
-                  cursor: 'pointer',
-                  '&:hover': { bgcolor: '#f5f5f5' }
-                }}>
-                  <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Avatar sx={{ bgcolor: '#f5576c' }}>
-                      <RestaurantIcon />
-                    </Avatar>
-                    <Box>
-                      <Typography variant="body1" fontWeight="bold">
-                        Add Food Item
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        Register new food in database
-                      </Typography>
-                    </Box>
-                  </CardContent>
-                </Card>
-
-                <Card sx={{ 
-                  mb: 2, 
-                  cursor: 'pointer',
-                  '&:hover': { bgcolor: '#f5f5f5' }
-                }}>
-                  <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Avatar sx={{ bgcolor: '#00f2fe' }}>
-                      <TrendingUpIcon />
-                    </Avatar>
-                    <Box>
-                      <Typography variant="body1" fontWeight="bold">
-                        View Analytics
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        Check nutrition trends
-                      </Typography>
-                    </Box>
-                  </CardContent>
-                </Card>
-
-                <Card sx={{ 
-                  cursor: 'pointer',
-                  '&:hover': { bgcolor: '#f5f5f5' }
-                }}>
-                  <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Avatar sx={{ bgcolor: '#38f9d7' }}>
-                      <FitnessCenterIcon />
-                    </Avatar>
-                    <Box>
-                      <Typography variant="body1" fontWeight="bold">
-                        Track Activities
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        Log physical activities
-                      </Typography>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Box>
-            </Paper>
-          </Grid>
-        </Grid>
-
-        {/* Alerts Section */}
-        <Paper sx={{ p: 3, mt: 3 }}>
-          <Typography variant="h5" fontWeight="bold" gutterBottom>
-            System Alerts
-          </Typography>
-          <Box sx={{ mt: 2 }}>
-            <Card sx={{ mb: 2, borderLeft: '4px solid #43e97b' }}>
-              <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Avatar sx={{ bgcolor: '#43e97b' }}>
-                  <TrendingUpIcon />
-                </Avatar>
-                <Box sx={{ flexGrow: 1 }}>
-                  <Typography variant="body1" fontWeight="bold">
-                    System Running Smoothly
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    All services are operational • Just now
-                  </Typography>
-                </Box>
-              </CardContent>
-            </Card>
-
-            <Card sx={{ mb: 2, borderLeft: '4px solid #667eea' }}>
-              <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Avatar sx={{ bgcolor: '#667eea' }}>
-                  <PersonIcon />
-                </Avatar>
-                <Box sx={{ flexGrow: 1 }}>
-                  <Typography variant="body1" fontWeight="bold">
-                    {stats.totalUsers} Users Registered
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    User database is up to date • 2 hours ago
-                  </Typography>
-                </Box>
-              </CardContent>
-            </Card>
-
-            <Card sx={{ borderLeft: '4px solid #ffa726' }}>
-              <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Avatar sx={{ bgcolor: '#ffa726' }}>
-                  <WarningIcon />
-                </Avatar>
-                <Box sx={{ flexGrow: 1 }}>
-                  <Typography variant="body1" fontWeight="bold">
-                    API Key Check
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    Remember to configure Spoonacular API key • 1 day ago
-                  </Typography>
-                </Box>
-              </CardContent>
-            </Card>
-          </Box>
-        </Paper>
+              ))}
+            </Box>
+          </Paper>
+        </Box>
       </Container>
     </Box>
   );

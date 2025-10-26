@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   AppBar,
@@ -9,9 +9,7 @@ import {
   Badge,
   Menu,
   MenuItem,
-  Divider,
-  Box
-} from '@mui/material';
+  Divider} from '@mui/material';
 import {
   Restaurant as RestaurantIcon,
   Home as HomeIcon,
