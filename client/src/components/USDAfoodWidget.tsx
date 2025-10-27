@@ -146,32 +146,32 @@ export default function USDAFoodWidget() {
         value: getNutrientValue(food, ['Energy']),
         unit: 'kcal',
         icon: <Flame className="w-5 h-5" />,
-        color: 'text-red-600',
-        bgColor: 'bg-red-50'
+        color: 'text-red-600 dark:text-red-400',
+        bgColor: 'bg-red-50 dark:bg-red-900/20'
       },
       {
         name: 'Protein',
         value: getNutrientValue(food, ['Protein']),
         unit: 'g',
         icon: <Beef className="w-5 h-5" />,
-        color: 'text-blue-600',
-        bgColor: 'bg-blue-50'
+        color: 'text-blue-600 dark:text-blue-400',
+        bgColor: 'bg-blue-50 dark:bg-blue-900/20'
       },
       {
         name: 'Carbs',
         value: getNutrientValue(food, ['Carbohydrate']),
         unit: 'g',
         icon: <Apple className="w-5 h-5" />,
-        color: 'text-green-600',
-        bgColor: 'bg-green-50'
+        color: 'text-green-600 dark:text-green-400',
+        bgColor: 'bg-green-50 dark:bg-green-900/20'
       },
       {
         name: 'Fat',
         value: getNutrientValue(food, ['Total lipid']),
         unit: 'g',
         icon: <Zap className="w-5 h-5" />,
-        color: 'text-yellow-600',
-        bgColor: 'bg-yellow-50'
+        color: 'text-yellow-600 dark:text-yellow-400',
+        bgColor: 'bg-yellow-50 dark:bg-yellow-900/20'
       }
     ];
   };
@@ -180,7 +180,7 @@ export default function USDAFoodWidget() {
 
   return (
     <div className="w-full">
-      <div className="bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-600 rounded-3xl p-6 md:p-8 shadow-2xl overflow-visible relative">
+      <div className="bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-600 dark:from-emerald-700 dark:via-teal-700 dark:to-cyan-700 rounded-3xl p-6 md:p-8 shadow-2xl overflow-visible relative">
         {/* Animated Background */}
         <div className="absolute inset-0 opacity-10 overflow-hidden rounded-3xl pointer-events-none">
           <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl animate-pulse"></div>
@@ -219,18 +219,18 @@ export default function USDAFoodWidget() {
           <div className="mb-6 relative">
             <form onSubmit={handleSearch}>
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 z-10" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 z-10" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search any food... (e.g., salmon, avocado, quinoa)"
-                  className="w-full pl-12 pr-24 py-4 rounded-2xl border-2 border-white/30 bg-white/95 backdrop-blur-sm focus:bg-white focus:border-white focus:ring-4 focus:ring-white/20 outline-none transition-all text-gray-800 placeholder-gray-400 font-medium"
+                  className="w-full pl-12 pr-24 py-4 rounded-2xl border-2 border-white/30 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm focus:bg-white dark:focus:bg-gray-800 focus:border-white dark:focus:border-gray-600 focus:ring-4 focus:ring-white/20 dark:focus:ring-gray-600/20 outline-none transition-all text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 font-medium"
                 />
                 <button
                   type="submit"
                   disabled={loading || !searchQuery.trim()}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 px-4 md:px-6 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 px-4 md:px-6 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-500 dark:from-emerald-600 dark:to-teal-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed text-sm md:text-base"
                 >
                   {loading ? (
                     <RefreshCw className="w-5 h-5 animate-spin" />
@@ -243,10 +243,10 @@ export default function USDAFoodWidget() {
 
             {/* Search Results Dropdown */}
             {showResults && (
-              <div className="absolute left-0 right-0 top-full mt-3 bg-white rounded-2xl shadow-2xl max-h-[400px] overflow-y-auto z-50 border-4 border-white">
+              <div className="absolute left-0 right-0 top-full mt-3 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-h-[400px] overflow-y-auto z-50 border-4 border-white dark:border-gray-700">
                 <div className="p-4">
-                  <div className="flex justify-between items-center mb-3 sticky top-0 bg-white pb-2 border-b-2 border-gray-100">
-                    <h3 className="font-bold text-gray-800">
+                  <div className="flex justify-between items-center mb-3 sticky top-0 bg-white dark:bg-gray-800 pb-2 border-b-2 border-gray-100 dark:border-gray-700">
+                    <h3 className="font-bold text-gray-800 dark:text-gray-100">
                       {loading ? 'Searching...' : `Search Results (${searchResults.length})`}
                     </h3>
                     <button
@@ -254,23 +254,23 @@ export default function USDAFoodWidget() {
                         setShowResults(false);
                         setError('');
                       }}
-                      className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
+                      className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                     >
-                      <X className="w-5 h-5 text-gray-600" />
+                      <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                     </button>
                   </div>
                   
                   {loading ? (
                     <div className="flex flex-col items-center justify-center py-8">
-                      <RefreshCw className="w-8 h-8 animate-spin text-emerald-600 mb-2" />
-                      <p className="text-sm text-gray-500">Searching USDA database...</p>
+                      <RefreshCw className="w-8 h-8 animate-spin text-emerald-600 dark:text-emerald-400 mb-2" />
+                      <p className="text-sm text-gray-500 dark:text-gray-400">Searching USDA database...</p>
                     </div>
                   ) : error ? (
-                    <div className="flex items-start gap-3 p-4 bg-red-50 rounded-xl border border-red-200">
-                      <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                    <div className="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-900/20 rounded-xl border border-red-200 dark:border-red-800">
+                      <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
                       <div>
-                        <p className="text-sm font-semibold text-red-800">Search Error</p>
-                        <p className="text-sm text-red-600">{error}</p>
+                        <p className="text-sm font-semibold text-red-800 dark:text-red-300">Search Error</p>
+                        <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
                       </div>
                     </div>
                   ) : searchResults.length > 0 ? (
@@ -279,24 +279,24 @@ export default function USDAFoodWidget() {
                         <button
                           key={food.fdcId}
                           onClick={() => selectFood(food)}
-                          className="w-full text-left p-3 rounded-xl hover:bg-emerald-50 transition-all group border border-transparent hover:border-emerald-200"
+                          className="w-full text-left p-3 rounded-xl hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-all group border border-transparent hover:border-emerald-200 dark:hover:border-emerald-700"
                         >
                           <div className="flex justify-between items-center">
                             <div className="flex-1 pr-2">
-                              <p className="font-semibold text-gray-800 group-hover:text-emerald-700 line-clamp-2">
+                              <p className="font-semibold text-gray-800 dark:text-gray-100 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 line-clamp-2">
                                 {food.description}
                               </p>
                               {food.brandOwner && (
-                                <p className="text-xs text-gray-500 mt-1">{food.brandOwner}</p>
+                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{food.brandOwner}</p>
                               )}
                             </div>
-                            <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-emerald-600 group-hover:translate-x-1 transition-all flex-shrink-0" />
+                            <ChevronRight className="w-5 h-5 text-gray-400 dark:text-gray-500 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 group-hover:translate-x-1 transition-all flex-shrink-0" />
                           </div>
                         </button>
                       ))}
                     </div>
                   ) : (
-                    <p className="text-center py-8 text-gray-500">
+                    <p className="text-center py-8 text-gray-500 dark:text-gray-400">
                       No results found. Try another search!
                     </p>
                   )}
@@ -307,29 +307,29 @@ export default function USDAFoodWidget() {
 
           {/* Featured/Selected Food Display */}
           {displayFood && !showResults && (
-            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-4 md:p-6 border-2 border-white/50 animate-fade-in">
+            <div className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-2xl p-4 md:p-6 border-2 border-white/50 dark:border-gray-700/50 animate-fade-in">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
-                  <div className="inline-flex items-center gap-2 bg-emerald-100 px-3 py-1 rounded-full mb-2">
-                    <Sparkles className="w-4 h-4 text-emerald-700" />
-                    <span className="text-xs font-bold text-emerald-700">
+                  <div className="inline-flex items-center gap-2 bg-emerald-100 dark:bg-emerald-900/30 px-3 py-1 rounded-full mb-2">
+                    <Sparkles className="w-4 h-4 text-emerald-700 dark:text-emerald-400" />
+                    <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300">
                       {selectedFood ? 'Selected Food' : 'Featured Today'}
                     </span>
                   </div>
-                  <h3 className="text-xl md:text-2xl font-bold text-gray-800 mb-1">
+                  <h3 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100 mb-1">
                     {displayFood.description}
                   </h3>
                   {displayFood.brandOwner && (
-                    <p className="text-sm text-gray-600">{displayFood.brandOwner}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{displayFood.brandOwner}</p>
                   )}
                 </div>
                 {selectedFood && (
                   <button
                     onClick={() => setSelectedFood(null)}
-                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0 ml-2"
+                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors flex-shrink-0 ml-2"
                     title="Close"
                   >
-                    <X className="w-5 h-5 text-gray-600" />
+                    <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                   </button>
                 )}
               </div>
@@ -339,15 +339,15 @@ export default function USDAFoodWidget() {
                 {getMainNutrients(displayFood).map((nutrient, idx) => (
                   <div
                     key={idx}
-                    className={`${nutrient.bgColor} rounded-xl p-3 md:p-4 border-2 border-white/50 hover:scale-105 transition-transform cursor-default`}
+                    className={`${nutrient.bgColor} rounded-xl p-3 md:p-4 border-2 border-white/50 dark:border-gray-700/50 hover:scale-105 transition-transform cursor-default`}
                   >
                     <div className={`${nutrient.color} mb-2`}>
                       {nutrient.icon}
                     </div>
-                    <p className="text-xs text-gray-600 font-medium mb-1">{nutrient.name}</p>
-                    <p className="text-xl md:text-2xl font-bold text-gray-800">
+                    <p className="text-xs text-gray-600 dark:text-gray-400 font-medium mb-1">{nutrient.name}</p>
+                    <p className="text-xl md:text-2xl font-bold text-gray-800 dark:text-gray-100">
                       {nutrient.value}
-                      <span className="text-sm font-normal text-gray-500 ml-1">
+                      <span className="text-sm font-normal text-gray-500 dark:text-gray-400 ml-1">
                         {nutrient.unit}
                       </span>
                     </p>
@@ -357,10 +357,10 @@ export default function USDAFoodWidget() {
 
               {/* Additional Nutrients */}
               {displayFood.foodNutrients.length > 4 && (
-                <div className="border-t-2 border-gray-100 pt-4">
+                <div className="border-t-2 border-gray-100 dark:border-gray-700 pt-4">
                   <div className="flex items-center gap-2 mb-3">
-                    <TrendingUp className="w-5 h-5 text-emerald-600" />
-                    <h4 className="font-bold text-gray-800">Additional Nutrients</h4>
+                    <TrendingUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                    <h4 className="font-bold text-gray-800 dark:text-gray-100">Additional Nutrients</h4>
                   </div>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                     {displayFood.foodNutrients
@@ -373,12 +373,12 @@ export default function USDAFoodWidget() {
                       .map((nutrient, idx) => (
                         <div
                           key={idx}
-                          className="flex justify-between items-center p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                          className="flex justify-between items-center p-2 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                         >
-                          <span className="text-xs text-gray-600 font-medium truncate pr-2">
+                          <span className="text-xs text-gray-600 dark:text-gray-300 font-medium truncate pr-2">
                             {nutrient.nutrientName}
                           </span>
-                          <span className="text-xs font-bold text-gray-800 flex-shrink-0">
+                          <span className="text-xs font-bold text-gray-800 dark:text-gray-100 flex-shrink-0">
                             {Math.round(nutrient.value * 10) / 10} {nutrient.unitName}
                           </span>
                         </div>
@@ -388,8 +388,8 @@ export default function USDAFoodWidget() {
               )}
 
               {/* Footer */}
-              <div className="mt-4 pt-4 border-t-2 border-gray-100">
-                <p className="text-xs text-gray-500 text-center">
+              <div className="mt-4 pt-4 border-t-2 border-gray-100 dark:border-gray-700">
+                <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
                   📊 Per 100g serving • Data from USDA FoodData Central
                 </p>
               </div>
