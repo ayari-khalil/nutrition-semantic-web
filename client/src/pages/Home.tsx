@@ -37,11 +37,11 @@ const Home = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       {/* Hero Section */}
       <section className="py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-3xl p-8 mb-8 text-white shadow-2xl">
+          <div className="bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-700 dark:to-teal-700 rounded-3xl p-8 mb-8 text-white shadow-2xl">
             <div className="grid lg:grid-cols-2 gap-8 items-center">
               {/* Left Content */}
               <div>
@@ -96,14 +96,14 @@ const Home = () => {
           {/* Features Section */}
           <div className="mb-8">
             <div className="text-center mb-6">
-              <div className="inline-flex items-center gap-2 bg-emerald-100 px-4 py-2 rounded-full mb-3">
-                <Sparkles className="w-4 h-4 text-emerald-700" />
-                <span className="text-sm font-semibold text-emerald-700">Powerful Features</span>
+              <div className="inline-flex items-center gap-2 bg-emerald-100 dark:bg-emerald-900/30 px-4 py-2 rounded-full mb-3">
+                <Sparkles className="w-4 h-4 text-emerald-700 dark:text-emerald-400" />
+                <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">Powerful Features</span>
               </div>
-              <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-2">
+              <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 dark:text-gray-100 mb-2">
                 Everything You Need for Better Nutrition
               </h2>
-              <p className="text-lg text-gray-600">
+              <p className="text-lg text-gray-600 dark:text-gray-300">
                 Our comprehensive platform combines cutting-edge AI with proven nutrition science
               </p>
             </div>
@@ -113,16 +113,16 @@ const Home = () => {
                 <Link
                   key={idx}
                   to={feature.link}
-                  className="group bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300"
+                  className="group bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-transparent dark:border-gray-700"
                 >
                   <div className={`inline-flex p-3 rounded-xl bg-gradient-to-r ${feature.gradient} text-white mb-4`}>
                     {feature.icon}
                   </div>
                   
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">{feature.title}</h3>
-                  <p className="text-gray-600 mb-4 leading-relaxed text-sm">{feature.description}</p>
+                  <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">{feature.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed text-sm">{feature.description}</p>
                   
-                  <div className="flex items-center gap-2 text-emerald-600 font-semibold text-sm group-hover:gap-3 transition-all">
+                  <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-semibold text-sm group-hover:gap-3 transition-all">
                     Explore
                     <ArrowRight className="w-4 h-4" />
                   </div>
@@ -132,7 +132,7 @@ const Home = () => {
           </div>
 
           {/* Stats Section */}
-          <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-8 mb-8 text-white shadow-lg">
+          <div className="bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-700 dark:to-teal-700 rounded-2xl p-8 mb-8 text-white shadow-lg">
             <h2 className="text-3xl font-bold mb-2 text-center">Trusted by Health-Conscious Users</h2>
             <p className="text-emerald-50 text-center mb-6">Join thousands making smarter nutrition choices</p>
             
@@ -152,23 +152,23 @@ const Home = () => {
           </div>
 
           {/* CTA Section */}
-          <div className="bg-white rounded-2xl p-8 lg:p-12 text-center shadow-lg">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">Ready to Transform Your Nutrition?</h2>
-            <p className="text-lg text-gray-600 mb-6 max-w-2xl mx-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 lg:p-12 text-center shadow-lg border border-transparent dark:border-gray-700">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 dark:text-gray-100 mb-4">Ready to Transform Your Nutrition?</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-300 mb-6 max-w-2xl mx-auto">
               Start your journey to better health with AI-powered insights and personalized recommendations
             </p>
             
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 to="/dashboard"
-                className="group inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all"
+                className="group inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-700 dark:to-teal-700 text-white rounded-xl font-semibold hover:shadow-lg transition-all"
               >
                 View Dashboard
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 to="/"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-emerald-50 text-emerald-700 rounded-xl font-semibold hover:bg-emerald-100 transition-all border-2 border-emerald-200"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded-xl font-semibold hover:bg-emerald-100 dark:hover:bg-emerald-900/50 transition-all border-2 border-emerald-200 dark:border-emerald-700"
               >
                 Ask AI a Question
               </Link>
