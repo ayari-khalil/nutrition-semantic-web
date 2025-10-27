@@ -11,7 +11,8 @@ import {
   X,
   Leaf,
   Cpu,
-  Database
+  Database,
+  ChevronDown
 } from 'lucide-react';
 import { ThemeToggle } from '../ui/ThemeToggle';
 
@@ -24,10 +25,13 @@ export const Header: React.FC<HeaderProps> = ({ className = '', sticky = false }
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isQueryOpen, setIsQueryOpen] = useState(false);
 
   const handleNavigate = (path: string) => {
     navigate(path);
     setIsMenuOpen(false);
+    setIsQueryOpen(false);
+    setIsProfileOpen(false);
   };
 
   return (
@@ -35,20 +39,73 @@ export const Header: React.FC<HeaderProps> = ({ className = '', sticky = false }
       <nav className="bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 dark:from-emerald-800 dark:via-teal-800 dark:to-emerald-900 shadow-2xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-3 cursor-pointer" onClick={() => handleNavigate('/')}>
+            <div className="flex items-center gap-3 cursor-pointer" onClick={() => handleNavigate('/Home')}>
               <Utensils className="w-8 h-8 text-white" />
               <span className="text-white text-2xl font-bold">NutritionGO</span>
             </div>
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center gap-2">
-              <button
-                onClick={() => handleNavigate('/')}
-                className="flex items-center gap-2 px-4 py-2 text-white hover:bg-white/20 rounded-lg transition-colors"
-              >
-                <Home className="w-5 h-5" />
-                <span>Query</span>
-              </button>
+              
+              {/* Query Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => setIsQueryOpen(!isQueryOpen)}
+                  className="flex items-center gap-2 px-4 py-2 text-white hover:bg-white/20 rounded-lg transition-colors"
+                >
+                  <Home className="w-5 h-5" />
+                  <span>Query</span>
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      isQueryOpen ? 'rotate-180' : ''
+                    }`}
+                  />
+                </button>
+
+                {isQueryOpen && (
+                  <>
+                    {/* Overlay to close on outside click */}
+                    <div
+                      className="fixed inset-0 z-10"
+                      onClick={() => setIsQueryOpen(false)}
+                    />
+                    <div className="absolute left-0 mt-2 w-52 bg-white dark:bg-gray-800 rounded-lg shadow-xl z-20 overflow-hidden">
+                      <button
+                        onClick={() => handleNavigate('/')}
+                        className="w-full px-4 py-3 text-left text-gray-700 dark:text-gray-200 hover:bg-emerald-50 dark:hover:bg-gray-700 transition-colors"
+                      >
+                        Query Page
+                      </button>
+                      <hr className="border-gray-200 dark:border-gray-700" />
+                      <button
+                        onClick={() => handleNavigate('/users')}
+                        className="w-full px-4 py-3 text-left text-gray-700 dark:text-gray-200 hover:bg-emerald-50 dark:hover:bg-gray-700 transition-colors"
+                      >
+                        Users CRUD
+                      </button>
+                      <button
+                        onClick={() => handleNavigate('/diets')}
+                        className="w-full px-4 py-3 text-left text-gray-700 dark:text-gray-200 hover:bg-emerald-50 dark:hover:bg-gray-700 transition-colors"
+                      >
+                        Diets CRUD
+                      </button>
+                      <button
+                        onClick={() => handleNavigate('/nutrients')}
+                        className="w-full px-4 py-3 text-left text-gray-700 dark:text-gray-200 hover:bg-emerald-50 dark:hover:bg-gray-700 transition-colors"
+                      >
+                        Nutrients CRUD
+                      </button>
+                      <button
+                        onClick={() => handleNavigate('/foods')}
+                        className="w-full px-4 py-3 text-left text-gray-700 dark:text-gray-200 hover:bg-emerald-50 dark:hover:bg-gray-700 transition-colors"
+                      >
+                        Foods CRUD
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+
               <button
                 onClick={() => handleNavigate('/recipes')}
                 className="flex items-center gap-2 px-4 py-2 text-white hover:bg-white/20 rounded-lg transition-colors"
@@ -120,13 +177,59 @@ export const Header: React.FC<HeaderProps> = ({ className = '', sticky = false }
           {/* Mobile Menu Items */}
           {isMenuOpen && (
             <div className="md:hidden py-4 space-y-2">
-              <button
-                onClick={() => handleNavigate('/')}
-                className="w-full flex items-center gap-2 px-4 py-2 text-white hover:bg-white/20 rounded-lg transition-colors"
-              >
-                <Home className="w-5 h-5" />
-                <span>Query</span>
-              </button>
+              {/* Query Dropdown for Mobile */}
+              <div className="px-4">
+                <button
+                  onClick={() => setIsQueryOpen(!isQueryOpen)}
+                  className="w-full flex items-center justify-between text-white px-4 py-2 hover:bg-white/20 rounded-lg transition-colors"
+                >
+                  <span className="flex items-center gap-2">
+                    <Home className="w-5 h-5" />
+                    Query
+                  </span>
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      isQueryOpen ? 'rotate-180' : ''
+                    }`}
+                  />
+                </button>
+
+                {isQueryOpen && (
+                  <div className="mt-2 ml-6 space-y-1">
+                    <button
+                      onClick={() => handleNavigate('/')}
+                      className="w-full text-left text-white/90 hover:text-white px-2 py-1"
+                    >
+                      Query Page
+                    </button>
+                    <button
+                      onClick={() => handleNavigate('/users')}
+                      className="w-full text-left text-white/90 hover:text-white px-2 py-1"
+                    >
+                      Users CRUD
+                    </button>
+                    <button
+                      onClick={() => handleNavigate('/diets')}
+                      className="w-full text-left text-white/90 hover:text-white px-2 py-1"
+                    >
+                      Diets CRUD
+                    </button>
+                    <button
+                      onClick={() => handleNavigate('/nutrients')}
+                      className="w-full text-left text-white/90 hover:text-white px-2 py-1"
+                    >
+                      Nutrients CRUD
+                    </button>
+                    <button
+                      onClick={() => handleNavigate('/foods')}
+                      className="w-full text-left text-white/90 hover:text-white px-2 py-1"
+                    >
+                      Foods CRUD
+                    </button>
+                  </div>
+                )}
+              </div>
+
               <button
                 onClick={() => handleNavigate('/recipes')}
                 className="w-full flex items-center gap-2 px-4 py-2 text-white hover:bg-white/20 rounded-lg transition-colors"
@@ -141,6 +244,7 @@ export const Header: React.FC<HeaderProps> = ({ className = '', sticky = false }
                 <LayoutDashboard className="w-5 h-5" />
                 <span>Dashboard</span>
               </button>
+
               {/* Theme Toggle for Mobile */}
               <div className="px-4 py-2">
                 <ThemeToggle />
