@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Utensils,
   Home,
   BookOpen,
   LayoutDashboard,
@@ -36,9 +35,13 @@ export const Header: React.FC<HeaderProps> = ({ className = '', sticky = false }
       <nav className="bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 dark:from-emerald-800 dark:via-teal-800 dark:to-emerald-900 shadow-2xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-3 cursor-pointer" onClick={() => handleNavigate('/Home')}>
-              <Utensils className="w-8 h-8 text-white" />
-              <span className="text-white text-2xl font-bold">NutritionGO</span>
+            <div className="flex items-center gap-1 cursor-pointer" onClick={() => handleNavigate('/Home')}>
+              <img 
+                src="/nutrtionGo-removebg-preview.png" 
+                alt="NutritionGO Logo" 
+                className="w-40 h-20 object-contain"
+              />
+              
             </div>
 
             {/* Desktop Menu */}
