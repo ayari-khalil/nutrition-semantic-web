@@ -30,7 +30,7 @@ export const Footer: React.FC<FooterProps> = ({
             <span className="text-sm text-gray-600 dark:text-gray-300">
               Powered by{' '}
               <span className="font-bold gradient-text">
-                AI & Semantic Web
+                FullStack Attack
               </span>
             </span>
           </div>

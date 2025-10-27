@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Brain, BarChart3, UtensilsCrossed, Sparkles, ArrowRight, CheckCircle } from 'lucide-react';
+import USDAFoodWidget from '../components/USDAfoodWidget';
 
 const Home = () => {
   const features = [
@@ -87,6 +88,11 @@ const Home = () => {
             </div>
           </div>
 
+          {/* 🌟 USDA Food Widget - Star of the Show! */}
+          <div className="mb-8 animate-fade-in">
+            <USDAFoodWidget />
+          </div>
+
           {/* Features Section */}
           <div className="mb-8">
             <div className="text-center mb-6">
@@ -135,7 +141,7 @@ const Home = () => {
                 { value: '10K+', label: 'Active Users' },
                 { value: '50K+', label: 'Recipes Generated' },
                 { value: '100K+', label: 'AI Queries Processed' },
-                { value: '99.9%', label: 'Satisfaction Rate' },
+                { value: '300K+', label: 'Foods in Database' },
               ].map((stat, idx) => (
                 <div key={idx} className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 text-center">
                   <div className="text-3xl lg:text-4xl font-bold mb-1">{stat.value}</div>
