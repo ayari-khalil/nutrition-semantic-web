@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
-import { RefreshCw, Users, Apple, BookOpen, Activity, TrendingUp, AlertCircle, CheckCircle, Clock, Calendar } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { User, Utensils, Activity, TrendingUp } from 'lucide-react';
+import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8000';
 
@@ -155,201 +156,104 @@ PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>`;
     }
   };
 
-  const StatCard: React.FC<StatCardProps> = ({ title, value, icon: Icon, gradient, trend }) => (
-    <div className={`relative overflow-hidden rounded-2xl p-6 text-white transition-all duration-300 hover:scale-105 hover:shadow-2xl ${gradient}`}>
-      <div className="relative z-10">
-        <div className="flex items-start justify-between mb-4">
-          <div>
-            <p className="text-sm font-medium opacity-90 mb-1">{title}</p>
-            <h3 className="text-4xl font-bold">{loading ? '...' : value}</h3>
-          </div>
-          <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
-            <Icon size={28} />
-          </div>
+  type StatCardProps = {
+    title: string;
+    value: number | string;
+    icon: React.ReactNode;
+    gradient: string;
+  };
+
+  const StatCard: React.FC<StatCardProps> = ({ title, value, icon, gradient }) => (
+    <div className={`${gradient} rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex-1 min-w-[240px]`}>
+      <div className="flex justify-between items-start">
+        <div>
+          <h3 className="text-4xl font-bold mb-2">
+            {loading ? '...' : value}
+          </h3>
+          <p className="text-white/90 text-sm font-medium">{title}</p>
         </div>
-        {trend && (
-          <div className="flex items-center gap-2 text-sm">
-            <TrendingUp size={16} />
-            <span className="font-medium">{trend}%</span>
-            <span className="opacity-75">vs last month</span>
-          </div>
-        )}
+        <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
+          {icon}
+        </div>
       </div>
-      <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
-      <div className="absolute bottom-0 left-0 w-24 h-24 bg-black/10 rounded-full -ml-12 -mb-12"></div>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-2">
-            <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
-                Nutrition Dashboard
-              </h1>
-              <p className="text-gray-600 flex items-center gap-2">
-                <Clock size={16} />
-                Dernière mise à jour: {lastUpdate.toLocaleTimeString('fr-FR')}
-              </p>
-            </div>
-            <button
-              onClick={loadDashboardData}
-              disabled={loading}
-              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl hover:shadow-lg transition-all disabled:opacity-50"
-            >
-              <RefreshCw size={18} className={loading ? 'animate-spin' : ''} />
-              Actualiser
-            </button>
-          </div>
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">Dashboard Overview</h1>
+          <p className="text-gray-600">Welcome back! Here's what's happening with your nutrition system</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg p-4 mb-6">
-          <div className="flex items-center justify-between">
-            <span className="font-semibold text-gray-700">État du système</span>
-            <div className="flex gap-4">
-              {[
-                { label: 'Backend API', status: systemHealth.backend },
-                { label: 'Fuseki Server', status: systemHealth.fuseki },
-                { label: 'Ontology', status: systemHealth.ontology }
-              ].map((item, idx) => (
-                <div key={idx} className="flex items-center gap-2">
-                  {item.status ? (
-                    <CheckCircle size={16} className="text-green-500" />
-                  ) : (
-                    <AlertCircle size={16} className="text-red-500" />
-                  )}
-                  <span className="text-sm text-gray-600">{item.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="flex flex-wrap gap-6 mb-8">
           <StatCard
-            title="Utilisateurs"
+            title="Total Users"
             value={stats.totalUsers}
-            icon={Users}
-            gradient="bg-gradient-to-br from-blue-500 to-blue-700"
-            trend="+12"
+            icon={<User className="w-8 h-8" />}
+            gradient="bg-gradient-to-br from-emerald-500 to-teal-600"
           />
           <StatCard
-            title="Aliments"
+            title="Foods Available"
             value={stats.totalFoods}
-            icon={Apple}
-            gradient="bg-gradient-to-br from-green-500 to-emerald-700"
-            trend="+8"
+            icon={<Utensils className="w-8 h-8" />}
+            gradient="bg-gradient-to-br from-orange-500 to-amber-600"
           />
           <StatCard
-            title="Recettes"
+            title="Recipes"
             value={stats.totalRecipes}
-            icon={BookOpen}
-            gradient="bg-gradient-to-br from-purple-500 to-purple-700"
-            trend="+15"
+            icon={<Utensils className="w-8 h-8" />}
+            gradient="bg-gradient-to-br from-cyan-500 to-blue-600"
           />
           <StatCard
-            title="Activités"
+            title="Physical Activities"
             value={stats.totalActivities}
-            icon={Activity}
-            gradient="bg-gradient-to-br from-orange-500 to-red-600"
-            trend="+20"
+            icon={<Activity className="w-8 h-8" />}
+            gradient="bg-gradient-to-br from-lime-500 to-green-600"
           />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-white rounded-2xl shadow-lg p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                <Users size={24} className="text-indigo-600" />
-                Utilisateurs Récents
-              </h2>
-              <span className="text-sm text-gray-500">{recentUsers.length} utilisateurs</span>
+          <div className="bg-white rounded-2xl p-6 shadow-lg">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">System Health</h2>
+            <div className="space-y-4">
+              {['Backend API', 'Fuseki Server', 'Ontology Loaded', 'AI Model'].map((label, idx) => (
+                <div key={idx}>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm font-medium text-gray-700">{label}</span>
+                    <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
+                      Online
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                    <div className="bg-gradient-to-r from-green-500 to-emerald-500 h-full w-full"></div>
+                  </div>
+                </div>
+              ))}
             </div>
+          </div>
+
+          <div className="bg-white rounded-2xl p-6 shadow-lg">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">Quick Actions</h2>
             <div className="space-y-3">
-              {loading ? (
-                <div className="flex items-center justify-center py-8">
-                  <RefreshCw className="animate-spin text-indigo-600" size={32} />
-                </div>
-              ) : recentUsers.length > 0 ? (
-                recentUsers.map((user, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center justify-between p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl hover:shadow-md transition-all"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
-                        {user.name.charAt(0).toUpperCase()}
-                      </div>
-                      <div>
-                        <p className="font-semibold text-gray-800">{user.name}</p>
-                        <p className="text-sm text-gray-500">{user.age} ans</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm font-semibold text-indigo-600">{user.weight} kg</p>
-                      <p className="text-xs text-gray-500">Poids</p>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p className="text-center text-gray-500 py-8">Aucun utilisateur trouvé</p>
-              )}
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl shadow-lg p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                <Apple size={24} className="text-green-600" />
-                Aliments Disponibles
-              </h2>
-              <span className="text-sm text-gray-500">{topFoods.length} aliments</span>
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              {loading ? (
-                <div className="col-span-2 flex items-center justify-center py-8">
-                  <RefreshCw className="animate-spin text-green-600" size={32} />
-                </div>
-              ) : topFoods.length > 0 ? (
-                topFoods.map((food, idx) => (
-                  <div
-                    key={idx}
-                    className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl hover:shadow-md transition-all"
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      <Apple size={20} className="text-green-600" />
-                      <p className="font-semibold text-gray-800 text-sm">{food.name}</p>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-gray-500">Calories</span>
-                      <span className="text-lg font-bold text-green-600">{food.calories}</span>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p className="col-span-2 text-center text-gray-500 py-8">Aucun aliment trouvé</p>
-              )}
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl shadow-lg p-6 text-white lg:col-span-2">
-            <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-              <TrendingUp size={24} />
-              Statistiques Rapides
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { label: 'Avg Age', value: '28 ans', icon: Calendar },
-                { label: 'Avg Weight', value: '72 kg', icon: Activity },
-                { label: 'Total Calories', value: stats.totalFoods * 150, icon: Apple },
-                { label: 'Active Today', value: Math.floor(stats.totalUsers * 0.7), icon: Users }
-              ].map((stat, idx) => (
-                <div key={idx} className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
-                  <stat.icon size={20} className="mb-2 opacity-75" />
-                  <p className="text-2xl font-bold">{stat.value}</p>
-                  <p className="text-sm opacity-75">{stat.label}</p>
+                { title: 'Add New User', icon: <User className="w-5 h-5" />, color: 'from-emerald-500 to-teal-600', subtitle: 'Create a new user profile' },
+                { title: 'Add Food Item', icon: <Utensils className="w-5 h-5" />, color: 'from-orange-500 to-amber-600', subtitle: 'Register new food in database' },
+                { title: 'View Analytics', icon: <TrendingUp className="w-5 h-5" />, color: 'from-cyan-500 to-blue-600', subtitle: 'Check nutrition trends' },
+                { title: 'Track Activities', icon: <Activity className="w-5 h-5" />, color: 'from-lime-500 to-green-600', subtitle: 'Log physical activities' }
+              ].map((action, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer group"
+                >
+                  <div className={`bg-gradient-to-br ${action.color} p-3 rounded-lg text-white group-hover:scale-110 transition-transform`}>
+                    {action.icon}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-gray-800">{action.title}</h3>
+                    <p className="text-sm text-gray-500">{action.subtitle}</p>
+                  </div>
                 </div>
               ))}
             </div>

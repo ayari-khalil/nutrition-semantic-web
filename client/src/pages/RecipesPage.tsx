@@ -1,44 +1,17 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
-  Container,
-  Box,
-  Typography,
-  Paper,
-  Card,
-  CardContent,
-  CardMedia,
-  Button,
-  Chip,
-  Avatar,
-  CircularProgress,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  IconButton,
-  Tooltip,
-  Alert
-} from '@mui/material';
-import {
-  Restaurant as RestaurantIcon,
-  Person as PersonIcon,
-  FitnessCenter as FitnessCenterIcon,
-  LocalFireDepartment as CaloriesIcon,
-  AccessTime as TimeIcon,
-  Close as CloseIcon,
-  Favorite as FavoriteIcon,
-  FavoriteBorder as FavoriteBorderIcon,
-  TrendingUp as TrendingUpIcon,
-  Check as CheckIcon
-} from '@mui/icons-material';
+  Utensils,
+  Clock,
+  Flame,
+  Heart,
+  X,
+  TrendingUp,
+  User
+} from 'lucide-react';
 
 const API_BASE_URL = 'http://localhost:5000';
-const SPOONACULAR_API_KEY = '998851e456d54e60bf1907163af22cdc'
+const SPOONACULAR_API_KEY = '998851e456d54e60bf1907163af22cdc';
 
 interface User {
   name: string;
@@ -139,66 +112,62 @@ function RecipePage() {
     return Math.round(tdee);
   };
 
- const fetchRecipes = async (user: User) => {
-  setLoading(true);
+  const fetchRecipes = async (user: User) => {
+    setLoading(true);
 
-  try {
-    const targetCalories = calculateCalorieNeeds(user);
-    const caloriesPerMeal = Math.round(targetCalories / 3);
+    try {
+      const targetCalories = calculateCalorieNeeds(user);
+      const caloriesPerMeal = Math.round(targetCalories / 3);
 
-    // Build query parameters
-    const params: any = {
-      apiKey: SPOONACULAR_API_KEY,
-      number: 12,
-      addRecipeNutrition: true,
-      maxCalories: caloriesPerMeal + 200,
-      minCalories: caloriesPerMeal - 200
-    };
+      const params: any = {
+        apiKey: SPOONACULAR_API_KEY,
+        number: 12,
+        addRecipeNutrition: true,
+        maxCalories: caloriesPerMeal + 200,
+        minCalories: caloriesPerMeal - 200
+      };
 
-    // Add dietary restrictions safely
-    if (user.preferences?.some(p => typeof p === 'string' && p.toLowerCase().includes('végétarien'))) {
-      params.diet = 'vegetarian';
-    }
-    if (user.preferences?.some(p => typeof p === 'string' && p.toLowerCase().includes('végan'))) {
-      params.diet = 'vegan';
-    }
-
-    // Add intolerances safely
-    if (user.allergies && user.allergies.length > 0) {
-      const validAllergies = user.allergies.filter(a => typeof a === 'string');
-      if (validAllergies.length > 0) {
-        params.intolerances = validAllergies.join(',').toLowerCase();
+      if (user.preferences?.some(p => typeof p === 'string' && p.toLowerCase().includes('végétarien'))) {
+        params.diet = 'vegetarian';
       }
+      if (user.preferences?.some(p => typeof p === 'string' && p.toLowerCase().includes('végan'))) {
+        params.diet = 'vegan';
+      }
+
+      if (user.allergies && user.allergies.length > 0) {
+        const validAllergies = user.allergies.filter(a => typeof a === 'string');
+        if (validAllergies.length > 0) {
+          params.intolerances = validAllergies.join(',').toLowerCase();
+        }
+      }
+
+      const response = await axios.get(
+        'https://api.spoonacular.com/recipes/complexSearch',
+        { params }
+      );
+
+      const recipesData = response.data.results.map((recipe: any) => ({
+        id: recipe.id,
+        title: recipe.title,
+        image: recipe.image,
+        readyInMinutes: recipe.readyInMinutes,
+        servings: recipe.servings,
+        calories: recipe.nutrition?.nutrients?.find((n: any) => n.name === 'Calories')?.amount,
+        protein: recipe.nutrition?.nutrients?.find((n: any) => n.name === 'Protein')?.amount,
+        carbs: recipe.nutrition?.nutrients?.find((n: any) => n.name === 'Carbohydrates')?.amount,
+        fat: recipe.nutrition?.nutrients?.find((n: any) => n.name === 'Fat')?.amount,
+        healthScore: recipe.healthScore,
+        diets: recipe.diets || []
+      }));
+
+      setRecipes(recipesData);
+    } catch (err) {
+      console.error('Error fetching recipes:', err);
+      setError('Failed to fetch recipes. Check your Spoonacular API key.');
+    } finally {
+      setLoading(false);
     }
-
-    const response = await axios.get(
-      'https://api.spoonacular.com/recipes/complexSearch',
-      { params }
-    );
-
-    const recipesData = response.data.results.map((recipe: any) => ({
-      id: recipe.id,
-      title: recipe.title,
-      image: recipe.image,
-      readyInMinutes: recipe.readyInMinutes,
-      servings: recipe.servings,
-      calories: recipe.nutrition?.nutrients?.find((n: any) => n.name === 'Calories')?.amount,
-      protein: recipe.nutrition?.nutrients?.find((n: any) => n.name === 'Protein')?.amount,
-      carbs: recipe.nutrition?.nutrients?.find((n: any) => n.name === 'Carbohydrates')?.amount,
-      fat: recipe.nutrition?.nutrients?.find((n: any) => n.name === 'Fat')?.amount,
-      healthScore: recipe.healthScore,
-      diets: recipe.diets || []
-    }));
-
-    setRecipes(recipesData);
-  } catch (err) {
-    console.error('Error fetching recipes:', err);
-    setError('Failed to fetch recipes. Check your Spoonacular API key.');
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   const handleUserChange = (userName: string) => {
     setSelectedUser(userName);
@@ -220,135 +189,216 @@ function RecipePage() {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#f5f7fa', py: 4 }}>
-      <Container maxWidth="xl">
-        {/* Header */}
-        <Paper sx={{ p: 4, mb: 4, background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', borderRadius: 4, color: 'white' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-            <RestaurantIcon sx={{ fontSize: 48 }} />
-            <Box>
-              <Typography variant="h3" fontWeight="bold">Personalized Recipe Recommendations</Typography>
-              <Typography variant="subtitle1" sx={{ opacity: 0.9 }}>AI-powered meal suggestions based on your health goals</Typography>
-            </Box>
-          </Box>
-        </Paper>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-3xl p-8 mb-8 text-white shadow-2xl">
+          <div className="flex items-center gap-4">
+            <div className="bg-white/20 p-4 rounded-2xl backdrop-blur-sm">
+              <Utensils className="w-10 h-10" />
+            </div>
+            <div>
+              <h1 className="text-4xl font-bold mb-2">Personalized Recipe Recommendations</h1>
+              <p className="text-emerald-50">AI-powered meal suggestions based on your health goals</p>
+            </div>
+          </div>
+        </div>
 
-        {/* User Selection */}
-        <Paper sx={{ p: 3, mb: 4, borderRadius: 3 }}>
-          <FormControl fullWidth>
-            <InputLabel>Select User</InputLabel>
-            <Select value={selectedUser} onChange={(e) => handleUserChange(e.target.value)} label="Select User">
-              <MenuItem value=""><em>Choose a user...</em></MenuItem>
-              {users.map(u => <MenuItem key={u.name} value={u.name}>{u.name}</MenuItem>)}
-            </Select>
-          </FormControl>
-        </Paper>
+        <div className="bg-white rounded-2xl p-6 mb-8 shadow-lg">
+          <label className="block text-sm font-semibold text-gray-700 mb-2">Select User</label>
+          <select
+            value={selectedUser}
+            onChange={(e) => handleUserChange(e.target.value)}
+            className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-colors text-gray-800"
+          >
+            <option value="">Choose a user...</option>
+            {users.map(u => <option key={u.name} value={u.name}>{u.name}</option>)}
+          </select>
+        </div>
 
-        {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
-
-        {/* User Dashboard */}
-        {userData && (
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3, mb: 4 }}>
-            {[{
-              icon: <PersonIcon />, label: userData.name, value: `${userData.age} years`, avatar: true
-            }, {
-              icon: <FitnessCenterIcon />, label: 'BMI', value: calculateBMI(userData.weight, userData.height)
-            }, {
-              icon: <CaloriesIcon />, label: 'Daily Calories', value: calculateCalorieNeeds(userData)
-            }, {
-              icon: <TrendingUpIcon />, label: 'Goal', value: userData.goal
-            }].map((item, idx) => (
-              <Card key={idx} sx={{ p: 3, borderRadius: 3, flex: '1 1 220px', textAlign: 'center' }}>
-                {item.avatar ? (
-                  <Avatar sx={{ width: 80, height: 80, mx: 'auto', mb: 2, background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>{item.icon}</Avatar>
-                ) : <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'center', mb: 1 }}>{item.icon}<Typography variant="subtitle2" color="text.secondary">{item.label}</Typography></Box>}
-                <Typography variant="h6" fontWeight="bold">{item.value}</Typography>
-                {item.label === 'Goal' && <Box sx={{ mt: 1 }}>{userData.preferences?.map((p, i) => <Chip key={i} label={p} size="small" sx={{ mr: 0.5, mb: 0.5 }} />)}</Box>}
-              </Card>
-            ))}
-          </Box>
+        {error && (
+          <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-4 mb-6 text-red-700">
+            {error}
+          </div>
         )}
 
-        {/* Loading */}
-        {loading && <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}><CircularProgress size={60} /></Box>}
+        {userData && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-6 text-white shadow-lg text-center">
+              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
+                <User className="w-8 h-8" />
+              </div>
+              <h3 className="text-2xl font-bold mb-1">{userData.name}</h3>
+              <p className="text-emerald-50">{userData.age} years</p>
+            </div>
+            <div className="bg-white rounded-2xl p-6 shadow-lg text-center border-2 border-emerald-100">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <TrendingUp className="w-5 h-5 text-emerald-600" />
+                <span className="text-sm font-semibold text-gray-600">BMI</span>
+              </div>
+              <p className="text-3xl font-bold text-gray-800">{calculateBMI(userData.weight, userData.height)}</p>
+            </div>
+            <div className="bg-white rounded-2xl p-6 shadow-lg text-center border-2 border-orange-100">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <Flame className="w-5 h-5 text-orange-600" />
+                <span className="text-sm font-semibold text-gray-600">Daily Calories</span>
+              </div>
+              <p className="text-3xl font-bold text-gray-800">{calculateCalorieNeeds(userData)}</p>
+            </div>
+            <div className="bg-white rounded-2xl p-6 shadow-lg text-center border-2 border-blue-100">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <TrendingUp className="w-5 h-5 text-blue-600" />
+                <span className="text-sm font-semibold text-gray-600">Goal</span>
+              </div>
+              <p className="text-lg font-bold text-gray-800 mb-2">{userData.goal}</p>
+              <div className="flex flex-wrap gap-1 justify-center">
+                {userData.preferences?.slice(0, 2).map((p, i) => (
+                  <span key={i} className="px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs">
+                    {p}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
-        {/* Recipes Grid */}
+        {loading && (
+          <div className="flex justify-center py-16">
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-emerald-200 border-t-emerald-600"></div>
+          </div>
+        )}
+
         {!loading && recipes.length > 0 && (
           <>
-            <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography variant="h5" fontWeight="bold">Recommended Recipes ({recipes.length})</Typography>
-              <Chip icon={<CheckIcon />} label="Personalized for you" color="success" />
-            </Box>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-800">Recommended Recipes ({recipes.length})</h2>
+              <span className="px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-semibold flex items-center gap-2">
+                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                Personalized for you
+              </span>
+            </div>
 
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {recipes.map(recipe => (
-                <Card key={recipe.id} sx={{ width: 'calc(25% - 16px)', display: 'flex', flexDirection: 'column', borderRadius: 3, transition: 'all 0.3s', '&:hover': { transform: 'translateY(-8px)', boxShadow: '0 12px 24px rgba(0,0,0,0.15)' } }}>
-                  <Box sx={{ position: 'relative' }}>
-                    <CardMedia component="img" height="200" image={recipe.image} alt={recipe.title} />
-                    <IconButton sx={{ position: 'absolute', top: 8, right: 8, bgcolor: 'white', '&:hover': { bgcolor: 'white' } }} onClick={() => toggleFavorite(recipe.id)}>
-                      {favorites.includes(recipe.id) ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
-                    </IconButton>
-                    {recipe.healthScore && <Chip label={`Health: ${recipe.healthScore}/100`} size="small" color="success" sx={{ position: 'absolute', bottom: 8, left: 8 }} />}
-                  </Box>
-                  <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                    <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', minHeight: '3.6em' }}>{recipe.title}</Typography>
-                    <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap' }}>{recipe.diets?.slice(0, 2).map((d, i) => <Chip key={i} label={d} size="small" variant="outlined" />)}</Box>
-                    <Box sx={{ mt: 'auto' }}>
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-                        <Tooltip title="Cooking Time"><Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><TimeIcon fontSize="small" color="action" /><Typography variant="body2" color="text.secondary">{recipe.readyInMinutes} min</Typography></Box></Tooltip>
-                        <Tooltip title="Calories"><Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><CaloriesIcon fontSize="small" color="action" /><Typography variant="body2" color="text.secondary">{Math.round(recipe.calories || 0)} cal</Typography></Box></Tooltip>
-                      </Box>
-                      <Button fullWidth variant="contained" onClick={() => openRecipeDetails(recipe)} sx={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', '&:hover': { background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)' } }}>View Recipe</Button>
-                    </Box>
-                  </CardContent>
-                </Card>
+                <div key={recipe.id} className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 flex flex-col">
+                  <div className="relative">
+                    <img src={recipe.image} alt={recipe.title} className="w-full h-48 object-cover" />
+                    <button
+                      onClick={() => toggleFavorite(recipe.id)}
+                      className="absolute top-3 right-3 bg-white rounded-full p-2 hover:scale-110 transition-transform shadow-lg"
+                    >
+                      <Heart
+                        className={`w-5 h-5 ${favorites.includes(recipe.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'}`}
+                      />
+                    </button>
+                    {recipe.healthScore && (
+                      <span className="absolute bottom-3 left-3 px-3 py-1 bg-green-500 text-white rounded-full text-xs font-semibold">
+                        Health: {recipe.healthScore}/100
+                      </span>
+                    )}
+                  </div>
+                  <div className="p-5 flex-1 flex flex-col">
+                    <h3 className="font-bold text-gray-800 mb-3 line-clamp-2 min-h-[3rem]">
+                      {recipe.title}
+                    </h3>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {recipe.diets?.slice(0, 2).map((d, i) => (
+                        <span key={i} className="px-2 py-1 border border-emerald-300 text-emerald-700 rounded-lg text-xs">
+                          {d}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="mt-auto">
+                      <div className="flex justify-between mb-4 text-sm text-gray-600">
+                        <div className="flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          <span>{recipe.readyInMinutes} min</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Flame className="w-4 h-4" />
+                          <span>{Math.round(recipe.calories || 0)} cal</span>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => openRecipeDetails(recipe)}
+                        className="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all"
+                      >
+                        View Recipe
+                      </button>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </Box>
+            </div>
           </>
         )}
 
-        {/* Empty State */}
         {!loading && recipes.length === 0 && selectedUser && (
-          <Paper sx={{ p: 8, textAlign: 'center', borderRadius: 3 }}>
-            <RestaurantIcon sx={{ fontSize: 80, color: 'text.secondary', mb: 2 }} />
-            <Typography variant="h5" gutterBottom>No Recipes Found</Typography>
-            <Typography variant="body1" color="text.secondary">Try selecting a different user or check your API configuration</Typography>
-          </Paper>
+          <div className="bg-white rounded-2xl p-16 text-center shadow-lg">
+            <Utensils className="w-20 h-20 text-gray-300 mx-auto mb-4" />
+            <h3 className="text-2xl font-bold text-gray-800 mb-2">No Recipes Found</h3>
+            <p className="text-gray-600">Try selecting a different user or check your API configuration</p>
+          </div>
         )}
 
-        {/* Recipe Dialog */}
-        <Dialog open={Boolean(selectedRecipe)} onClose={() => setSelectedRecipe(null)} maxWidth="md" fullWidth>
-          {selectedRecipe && (
-            <>
-              <DialogTitle>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Typography variant="h5" fontWeight="bold">{selectedRecipe.title}</Typography>
-                  <IconButton onClick={() => setSelectedRecipe(null)}><CloseIcon /></IconButton>
-                </Box>
-              </DialogTitle>
-              <DialogContent dividers>
-                <CardMedia component="img" height="300" image={selectedRecipe.image} alt={selectedRecipe.title} sx={{ borderRadius: 2, mb: 3 }} />
-                <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 3 }}>
+        {selectedRecipe && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex justify-between items-start rounded-t-3xl">
+                <h2 className="text-2xl font-bold text-gray-800 pr-8">{selectedRecipe.title}</h2>
+                <button
+                  onClick={() => setSelectedRecipe(null)}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              <div className="p-6">
+                <img
+                  src={selectedRecipe.image}
+                  alt={selectedRecipe.title}
+                  className="w-full h-72 object-cover rounded-2xl mb-6"
+                />
+                <div className="grid grid-cols-4 gap-4 mb-6">
                   {['Calories', 'Protein', 'Carbs', 'Fat'].map((nutrient, i) => (
-                    <Paper key={i} sx={{ p: 2, textAlign: 'center', flex: '1 1 100px' }}>
-                      <Typography variant="h6" fontWeight="bold">{Math.round((selectedRecipe as any)[nutrient.toLowerCase()] || 0)}{nutrient === 'Calories' ? '' : 'g'}</Typography>
-                      <Typography variant="caption">{nutrient}</Typography>
-                    </Paper>
+                    <div key={i} className="bg-emerald-50 rounded-xl p-4 text-center border-2 border-emerald-200">
+                      <p className="text-2xl font-bold text-emerald-700">
+                        {Math.round((selectedRecipe as any)[nutrient.toLowerCase()] || 0)}
+                        {nutrient === 'Calories' ? '' : 'g'}
+                      </p>
+                      <p className="text-xs text-gray-600 mt-1">{nutrient}</p>
+                    </div>
                   ))}
-                </Box>
-                {selectedRecipe.summary && <Box><Typography variant="h6" fontWeight="bold" gutterBottom>Description</Typography><Typography variant="body2" dangerouslySetInnerHTML={{ __html: selectedRecipe.summary }} /></Box>}
-              </DialogContent>
-              <DialogActions sx={{ p: 2 }}>
-                <Button onClick={() => setSelectedRecipe(null)}>Close</Button>
-                <Button variant="contained" startIcon={<FavoriteIcon />} onClick={() => toggleFavorite(selectedRecipe.id)} sx={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+                </div>
+                {selectedRecipe.summary && (
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-800 mb-3">Description</h3>
+                    <div
+                      className="text-gray-700 leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: selectedRecipe.summary }}
+                    />
+                  </div>
+                )}
+              </div>
+              <div className="sticky bottom-0 bg-gray-50 p-6 flex gap-3 rounded-b-3xl border-t border-gray-200">
+                <button
+                  onClick={() => setSelectedRecipe(null)}
+                  className="flex-1 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-100 transition-colors"
+                >
+                  Close
+                </button>
+                <button
+                  onClick={() => toggleFavorite(selectedRecipe.id)}
+                  className="flex-1 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                >
+                  <Heart className={favorites.includes(selectedRecipe.id) ? 'fill-white' : ''} />
                   {favorites.includes(selectedRecipe.id) ? 'Remove from Favorites' : 'Add to Favorites'}
-                </Button>
-              </DialogActions>
-            </>
-          )}
-        </Dialog>
-      </Container>
-    </Box>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 

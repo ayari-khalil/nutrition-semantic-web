@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Header } from '@/components';
+import { Header } from '@/components/layout/Header';
 import QueryPage from '@/pages/QueryPage';
 import RecipePage from '@/pages/RecipesPage';
 import DashboardPage from '@/pages/DashboardPage';

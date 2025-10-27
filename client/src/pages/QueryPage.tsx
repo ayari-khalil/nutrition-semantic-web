@@ -1,27 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import {
-  Container,
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Alert,
-  CircularProgress,
-  Chip,
-} from '@mui/material';
-import {
-  Search as SearchIcon,
-  Code as CodeIcon,
-  CheckCircle as CheckIcon
-} from '@mui/icons-material';
+import { Search, Code, CheckCircle, Loader2 } from 'lucide-react';
 
 const API_URL = 'http://localhost:5000';
 
@@ -75,170 +54,134 @@ function QueryPage() {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#f5f7fa', py: 4 }}>
-      <Container maxWidth="lg">
-        {/* Header */}
-        <Paper
-          elevation={0}
-          sx={{
-            p: 4,
-            mb: 4,
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            borderRadius: 4,
-            color: 'white'
-          }}
-        >
-          <Typography variant="h3" fontWeight="bold" gutterBottom>
-            🤖 AI Nutrition Query System
-          </Typography>
-          <Typography variant="subtitle1">
-            Ask questions in natural language about nutrition and health
-          </Typography>
-        </Paper>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-3xl p-8 mb-8 text-white shadow-2xl">
+          <div className="flex items-center gap-4">
+            <div className="bg-white/20 p-4 rounded-2xl backdrop-blur-sm">
+              <Search className="w-10 h-10" />
+            </div>
+            <div>
+              <h1 className="text-4xl font-bold mb-2">AI Nutrition Query System</h1>
+              <p className="text-emerald-50">Ask questions in natural language about nutrition and health</p>
+            </div>
+          </div>
+        </div>
 
-        {/* Search Box */}
-        <Paper sx={{ p: 3, mb: 3, borderRadius: 3 }}>
+        <div className="bg-white rounded-2xl p-6 mb-6 shadow-lg">
           <form onSubmit={handleSubmit}>
-            <Box sx={{ display: 'flex', gap: 2 }}>
-              <TextField
-                fullWidth
+            <div className="flex gap-3">
+              <input
+                type="text"
+                className="flex-1 px-6 py-4 border-2 border-gray-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-colors text-gray-800 placeholder-gray-400"
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
                 placeholder="Ex: Quels sont les utilisateurs végétariens?"
                 disabled={loading}
-                variant="outlined"
               />
-              <Button
+              <button
                 type="submit"
-                variant="contained"
                 disabled={loading}
-                startIcon={loading ? <CircularProgress size={20} /> : <SearchIcon />}
-                sx={{
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  minWidth: 150
-                }}
+                className="px-8 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 min-w-[150px] justify-center"
               >
-                {loading ? 'Searching...' : 'Search'}
-              </Button>
-            </Box>
+                {loading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <span>Searching...</span>
+                  </>
+                ) : (
+                  <>
+                    <Search className="w-5 h-5" />
+                    <span>Search</span>
+                  </>
+                )}
+              </button>
+            </div>
           </form>
 
-          {/* Example Questions */}
-          <Box sx={{ mt: 3 }}>
-            <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 'bold', mb: 2 }}>
-              💡 Example Questions:
-            </Typography>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+          <div className="mt-6">
+            <p className="text-sm font-semibold text-gray-700 mb-3">Example Questions:</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
               {exampleQuestions.map((ex, idx) => (
-                <Chip
+                <button
                   key={idx}
-                  label={ex}
                   onClick={() => handleExampleClick(ex)}
                   disabled={loading}
-                  sx={{
-                    flex: '1 1 calc(33% - 8px)',
-                    minWidth: 150,
-                    justifyContent: 'flex-start',
-                    '&:hover': { bgcolor: '#e3f2fd' }
-                  }}
-                />
+                  className="px-4 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-lg text-sm text-left transition-colors disabled:opacity-50 disabled:cursor-not-allowed border border-emerald-200"
+                >
+                  {ex}
+                </button>
               ))}
-            </Box>
-          </Box>
-        </Paper>
+            </div>
+          </div>
+        </div>
 
-        {/* Error Message */}
         {error && (
-          <Alert severity="error" sx={{ mb: 3, borderRadius: 2 }}>
+          <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-4 mb-6 text-red-700">
             {error}
-          </Alert>
+          </div>
         )}
 
-        {/* Results */}
         {response && (
-          <Box>
-            {/* SPARQL Query */}
-            <Paper sx={{ p: 3, mb: 3, borderRadius: 3 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                <CodeIcon color="primary" />
-                <Typography variant="h6" fontWeight="bold">
-                  Generated SPARQL Query
-                </Typography>
-              </Box>
-              <Paper
-                elevation={0}
-                sx={{
-                  p: 2,
-                  bgcolor: '#1e1e1e',
-                  color: '#4ec9b0',
-                  fontFamily: 'monospace',
-                  fontSize: '0.9rem',
-                  overflow: 'auto',
-                  borderRadius: 2
-                }}
-              >
-                <pre style={{ margin: 0 }}>{response.sparql}</pre>
-              </Paper>
-            </Paper>
+          <div className="space-y-6">
+            <div className="bg-white rounded-2xl p-6 shadow-lg">
+              <div className="flex items-center gap-2 mb-4">
+                <Code className="w-6 h-6 text-emerald-600" />
+                <h2 className="text-xl font-bold text-gray-800">Generated SPARQL Query</h2>
+              </div>
+              <div className="bg-gray-900 text-green-400 p-4 rounded-xl overflow-auto font-mono text-sm">
+                <pre className="m-0">{response.sparql}</pre>
+              </div>
+            </div>
 
-            {/* Results Table */}
-            <Paper sx={{ p: 3, borderRadius: 3 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <CheckIcon color="success" />
-                  <Typography variant="h6" fontWeight="bold">
-                    Results ({response.count})
-                  </Typography>
-                </Box>
+            <div className="bg-white rounded-2xl p-6 shadow-lg">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="w-6 h-6 text-green-600" />
+                  <h2 className="text-xl font-bold text-gray-800">Results ({response.count})</h2>
+                </div>
                 {response.count > 0 && (
-                  <Chip
-                    label={`${response.count} result${response.count > 1 ? 's' : ''} found`}
-                    color="success"
-                    size="small"
-                  />
+                  <span className="px-4 py-1 bg-green-100 text-green-700 rounded-full text-sm font-semibold">
+                    {response.count} result{response.count > 1 ? 's' : ''} found
+                  </span>
                 )}
-              </Box>
+              </div>
 
               {response.results.length === 0 ? (
-                <Box sx={{ textAlign: 'center', py: 4 }}>
-                  <Typography variant="body1" color="text.secondary">
-                    No results found
-                  </Typography>
-                </Box>
+                <div className="text-center py-12">
+                  <p className="text-gray-500">No results found</p>
+                </div>
               ) : (
-                <TableContainer>
-                  <Table>
-                    <TableHead>
-                      <TableRow sx={{ bgcolor: '#f5f5f5' }}>
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="bg-emerald-50 border-b-2 border-emerald-200">
                         {Object.keys(response.results[0]).map((key) => (
-                          <TableCell key={key} sx={{ fontWeight: 'bold' }}>
-                            {key.toUpperCase()}
-                          </TableCell>
+                          <th key={key} className="px-6 py-3 text-left text-sm font-bold text-emerald-900 uppercase tracking-wider">
+                            {key}
+                          </th>
                         ))}
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
                       {response.results.map((row, idx) => (
-                        <TableRow
-                          key={idx}
-                          sx={{ '&:hover': { bgcolor: '#f9fafb' } }}
-                        >
+                        <tr key={idx} className="hover:bg-gray-50 transition-colors">
                           {Object.values(row).map((val: any, vidx) => (
-                            <TableCell key={vidx}>
-                              {val || <span style={{ color: '#999' }}>-</span>}
-                            </TableCell>
+                            <td key={vidx} className="px-6 py-4 text-gray-800">
+                              {val || <span className="text-gray-400">-</span>}
+                            </td>
                           ))}
-                        </TableRow>
+                        </tr>
                       ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+                    </tbody>
+                  </table>
+                </div>
               )}
-            </Paper>
-          </Box>
+            </div>
+          </div>
         )}
-      </Container>
-    </Box>
+      </div>
+    </div>
   );
 }
 
