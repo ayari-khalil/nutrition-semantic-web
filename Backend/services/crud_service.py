@@ -15,8 +15,8 @@ class CRUDService:
     
     def __init__(self, fuseki_url: str = None):
         """Initialize CRUD service with Fuseki endpoint"""
-        self.fuseki_url = fuseki_url or os.getenv('FUSEKI_URL', 'http://localhost:3031/nutrition/sparql')
-        self.update_url = fuseki_url or os.getenv('FUSEKI_UPDATE_URL', 'http://localhost:3031/nutrition/update')
+        self.fuseki_url = fuseki_url or os.getenv('FUSEKI_URL', 'http://localhost:3030/nutrition/sparql')
+        self.update_url = fuseki_url or os.getenv('FUSEKI_UPDATE_URL', 'http://localhost:3030/nutrition/update')
         self.builder = SPARQLBuilder()
     
     def _execute_query(self, query: str) -> Dict:
