@@ -1,15 +1,30 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from nlp_to_sparql import nl_to_sparql, execute_sparql, format_results
+from routes.crud_routes import crud_bp
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for React frontend
 
-FUSEKI_URL = os.getenv('FUSEKI_URL', 'http://localhost:3030/nutrition/sparql')
+# Enable CORS with explicit configuration for React frontend
+CORS(app, resources={
+    r"/*": {
+        "origins": ["http://localhost:3000", "http://127.0.0.1:3000"],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization", "Accept"],
+        "expose_headers": ["Content-Type"],
+        "supports_credentials": True,
+        "max_age": 3600
+    }
+})
+
+# Register CRUD routes
+app.register_blueprint(crud_bp)
+
+FUSEKI_URL = os.getenv('FUSEKI_URL', 'http://localhost:3031/nutrition/sparql')
 
 
 @app.route('/health', methods=['GET'])
