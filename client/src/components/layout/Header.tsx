@@ -9,9 +9,6 @@ import {
   User,
   Menu,
   X,
-  Leaf,
-  Cpu,
-  Database,
   ChevronDown
 } from 'lucide-react';
 import { ThemeToggle } from '../ui/ThemeToggle';
@@ -254,39 +251,7 @@ export const Header: React.FC<HeaderProps> = ({ className = '', sticky = false }
         </div>
       </nav>
 
-      {/* Header Content */}
-      <div className="bg-gradient-to-br from-white to-emerald-50 dark:from-gray-900 dark:to-emerald-950 border-b border-emerald-100 dark:border-emerald-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div className="flex-1">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="p-3 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl shadow-lg">
-                  <Leaf className="text-white w-10 h-10" />
-                </div>
-                <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400 bg-clip-text text-transparent">
-                  NutritionGO
-                </h1>
-              </div>
-
-              <p className="text-gray-600 dark:text-gray-300 text-base sm:text-lg mb-4">
-                Posez vos questions sur la nutrition en langage naturel
-              </p>
-
-              <div className="flex flex-wrap gap-3">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 dark:bg-emerald-900/30 rounded-full border border-emerald-200 dark:border-emerald-800">
-                  <Cpu className="text-emerald-600 dark:text-emerald-400 w-4 h-4" />
-                  <span className="text-sm text-emerald-700 dark:text-emerald-300 font-medium">AI-Powered</span>
-                </div>
-
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-teal-50 dark:bg-teal-900/30 rounded-full border border-teal-200 dark:border-teal-800">
-                  <Database className="text-teal-600 dark:text-teal-400 w-4 h-4" />
-                  <span className="text-sm text-teal-700 dark:text-teal-300 font-medium">Semantic Web</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    
     </header>
   );
 };
