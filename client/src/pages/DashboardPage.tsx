@@ -1,21 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Container,
-  Box,
-  Typography,
-  Paper,
-  Card,
-  CardContent,
-  Avatar,
-  Chip,
-  LinearProgress
-} from '@mui/material';
-import {
-  Person as PersonIcon,
-  Restaurant as RestaurantIcon,
-  FitnessCenter as FitnessCenterIcon,
-  TrendingUp as TrendingUpIcon,
-} from '@mui/icons-material';
+import { User, Utensils, Activity, TrendingUp } from 'lucide-react';
 import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8000';
@@ -93,106 +77,107 @@ function DashboardPage() {
     title: string;
     value: number | string;
     icon: React.ReactNode;
-    color: string;
-    bgColor: string;
+    gradient: string;
   };
 
-  const StatCard: React.FC<StatCardProps> = ({ title, value, icon, color, bgColor }) => (
-    <Card sx={{ 
-      flex: '1 1 200px',
-      minWidth: 200,
-      height: '100%',
-      background: `linear-gradient(135deg, ${bgColor} 0%, ${color} 100%)`,
-      color: 'white',
-      transition: 'all 0.3s',
-      '&:hover': {
-        transform: 'translateY(-5px)',
-        boxShadow: '0 8px 16px rgba(0,0,0,0.2)'
-      }
-    }}>
-      <CardContent>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Box>
-            <Typography variant="h3" fontWeight="bold">
-              {loading ? '...' : value}
-            </Typography>
-            <Typography variant="body1" sx={{ mt: 1, opacity: 0.9 }}>
-              {title}
-            </Typography>
-          </Box>
-          <Avatar sx={{ width: 64, height: 64, bgcolor: 'rgba(255,255,255,0.2)' }}>
-            {icon}
-          </Avatar>
-        </Box>
-      </CardContent>
-    </Card>
+  const StatCard: React.FC<StatCardProps> = ({ title, value, icon, gradient }) => (
+    <div className={`${gradient} rounded-2xl p-6 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex-1 min-w-[240px]`}>
+      <div className="flex justify-between items-start">
+        <div>
+          <h3 className="text-4xl font-bold mb-2">
+            {loading ? '...' : value}
+          </h3>
+          <p className="text-white/90 text-sm font-medium">{title}</p>
+        </div>
+        <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
+          {icon}
+        </div>
+      </div>
+    </div>
   );
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: '#f8f9fa', py: 4 }}>
-      <Container maxWidth="xl">
-        <Box sx={{ mb: 4 }}>
-          <Typography variant="h3" fontWeight="bold" gutterBottom>
-            Dashboard Overview
-          </Typography>
-          <Typography variant="subtitle1" color="text.secondary">
-            Welcome back! Here's what's happening with your nutrition system
-          </Typography>
-        </Box>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">Dashboard Overview</h1>
+          <p className="text-gray-600">Welcome back! Here's what's happening with your nutrition system</p>
+        </div>
 
-        {/* Statistics Cards using Flexbox */}
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3, mb: 4 }}>
-          <StatCard title="Total Users" value={stats.totalUsers} icon={<PersonIcon sx={{ fontSize: 32 }} />} color="#667eea" bgColor="#764ba2" />
-          <StatCard title="Foods Available" value={stats.totalFoods} icon={<RestaurantIcon sx={{ fontSize: 32 }} />} color="#f093fb" bgColor="#f5576c" />
-          <StatCard title="Recipes" value={stats.totalRecipes} icon={<RestaurantIcon sx={{ fontSize: 32 }} />} color="#4facfe" bgColor="#00f2fe" />
-          <StatCard title="Physical Activities" value={stats.totalActivities} icon={<FitnessCenterIcon sx={{ fontSize: 32 }} />} color="#43e97b" bgColor="#38f9d7" />
-        </Box>
+        <div className="flex flex-wrap gap-6 mb-8">
+          <StatCard
+            title="Total Users"
+            value={stats.totalUsers}
+            icon={<User className="w-8 h-8" />}
+            gradient="bg-gradient-to-br from-emerald-500 to-teal-600"
+          />
+          <StatCard
+            title="Foods Available"
+            value={stats.totalFoods}
+            icon={<Utensils className="w-8 h-8" />}
+            gradient="bg-gradient-to-br from-orange-500 to-amber-600"
+          />
+          <StatCard
+            title="Recipes"
+            value={stats.totalRecipes}
+            icon={<Utensils className="w-8 h-8" />}
+            gradient="bg-gradient-to-br from-cyan-500 to-blue-600"
+          />
+          <StatCard
+            title="Physical Activities"
+            value={stats.totalActivities}
+            icon={<Activity className="w-8 h-8" />}
+            gradient="bg-gradient-to-br from-lime-500 to-green-600"
+          />
+        </div>
 
-        {/* Recent Activity Section */}
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
-          <Paper sx={{ flex: '1 1 400px', p: 3, minHeight: 300 }}>
-            <Typography variant="h5" fontWeight="bold" gutterBottom>
-              System Health
-            </Typography>
-            <Box sx={{ mt: 3 }}>
-              {['Backend API','Fuseki Server','Ontology Loaded','AI Model'].map((label, idx) => (
-                <Box key={idx} sx={{ mb: 3 }}>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                    <Typography variant="body2">{label}</Typography>
-                    <Chip label="Online" color="success" size="small" />
-                  </Box>
-                  <LinearProgress variant="determinate" value={100} color="success" />
-                </Box>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-white rounded-2xl p-6 shadow-lg">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">System Health</h2>
+            <div className="space-y-4">
+              {['Backend API', 'Fuseki Server', 'Ontology Loaded', 'AI Model'].map((label, idx) => (
+                <div key={idx}>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm font-medium text-gray-700">{label}</span>
+                    <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
+                      Online
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                    <div className="bg-gradient-to-r from-green-500 to-emerald-500 h-full w-full"></div>
+                  </div>
+                </div>
               ))}
-            </Box>
-          </Paper>
+            </div>
+          </div>
 
-          <Paper sx={{ flex: '1 1 400px', p: 3, minHeight: 300 }}>
-            <Typography variant="h5" fontWeight="bold" gutterBottom>
-              Quick Actions
-            </Typography>
-            <Box sx={{ mt: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <div className="bg-white rounded-2xl p-6 shadow-lg">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">Quick Actions</h2>
+            <div className="space-y-3">
               {[
-                {title: 'Add New User', icon: <PersonIcon />, color: '#667eea', subtitle: 'Create a new user profile'},
-                {title: 'Add Food Item', icon: <RestaurantIcon />, color: '#f5576c', subtitle: 'Register new food in database'},
-                {title: 'View Analytics', icon: <TrendingUpIcon />, color: '#00f2fe', subtitle: 'Check nutrition trends'},
-                {title: 'Track Activities', icon: <FitnessCenterIcon />, color: '#38f9d7', subtitle: 'Log physical activities'}
+                { title: 'Add New User', icon: <User className="w-5 h-5" />, color: 'from-emerald-500 to-teal-600', subtitle: 'Create a new user profile' },
+                { title: 'Add Food Item', icon: <Utensils className="w-5 h-5" />, color: 'from-orange-500 to-amber-600', subtitle: 'Register new food in database' },
+                { title: 'View Analytics', icon: <TrendingUp className="w-5 h-5" />, color: 'from-cyan-500 to-blue-600', subtitle: 'Check nutrition trends' },
+                { title: 'Track Activities', icon: <Activity className="w-5 h-5" />, color: 'from-lime-500 to-green-600', subtitle: 'Log physical activities' }
               ].map((action, idx) => (
-                <Card key={idx} sx={{ cursor: 'pointer', '&:hover': { bgcolor: '#f5f5f5' } }}>
-                  <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Avatar sx={{ bgcolor: action.color }}>{action.icon}</Avatar>
-                    <Box>
-                      <Typography variant="body1" fontWeight="bold">{action.title}</Typography>
-                      <Typography variant="caption" color="text.secondary">{action.subtitle}</Typography>
-                    </Box>
-                  </CardContent>
-                </Card>
+                <div
+                  key={idx}
+                  className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer group"
+                >
+                  <div className={`bg-gradient-to-br ${action.color} p-3 rounded-lg text-white group-hover:scale-110 transition-transform`}>
+                    {action.icon}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-gray-800">{action.title}</h3>
+                    <p className="text-sm text-gray-500">{action.subtitle}</p>
+                  </div>
+                </div>
               ))}
-            </Box>
-          </Paper>
-        </Box>
-      </Container>
-    </Box>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
