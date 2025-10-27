@@ -37,7 +37,10 @@ INSTRUCTIONS:
 2. Use PREFIX : <http://www.semanticweb.org/gigabytei5/ontologies/2025/9/untitled-ontology-5#>
 3. Return ONLY the SPARQL query, no explanations
 4. Use SELECT queries for retrieving data
-5. Use FILTER for conditions (age, weight, etc.)
+5. Use direct triple patterns, NOT FILTER clauses for matching resources
+6. For matching specific resources (like :Proteines), use direct patterns like: ?aliment :aNutriment :Proteines
+7. Use proper resource names without special characters when possible (Proteines not Protéines)
+8. Always include the class type with 'a' when querying entities
 
 EXAMPLES:
 
@@ -55,11 +58,33 @@ SELECT ?allergie WHERE {
   :Khalil :aAllergie ?allergie .
 }
 
+Question: "Qui est moetaz?" or "Informations sur moetaz"
+SPARQL:
+PREFIX : <http://www.semanticweb.org/gigabytei5/ontologies/2025/9/untitled-ontology-5#>
+SELECT * WHERE {
+  :moetaz ?p ?o .
+}
+
+Question: "Quel est l'âge de moetaz?"
+SPARQL:
+PREFIX : <http://www.semanticweb.org/gigabytei5/ontologies/2025/9/untitled-ontology-5#>
+SELECT ?age WHERE {
+  :moetaz :aAge ?age .
+}
+
 Question: "Quels aliments contiennent des protéines?"
 SPARQL:
 PREFIX : <http://www.semanticweb.org/gigabytei5/ontologies/2025/9/untitled-ontology-5#>
 SELECT ?aliment WHERE {
-  ?aliment :aNutriment :Protéines .
+  ?aliment a :Aliment ;
+           :aNutriment :Proteines .
+}
+
+Question: "Quels sont tous les aliments?"
+SPARQL:
+PREFIX : <http://www.semanticweb.org/gigabytei5/ontologies/2025/9/untitled-ontology-5#>
+SELECT ?aliment WHERE {
+  ?aliment a :Aliment .
 }
 
 Question: "Quel est le poids de Dhia?"
@@ -155,12 +180,19 @@ def execute_sparql(sparql_query, fuseki_url):
     """Execute SPARQL query on Fuseki server"""
     
     headers = {
-        "Accept": "application/sparql-results+json"
+        "Content-Type": "application/sparql-query; charset=utf-8",
+        "Accept": "application/json"
     }
     
     try:
         print(f"Executing SPARQL on Fuseki: {fuseki_url}")
-        response = requests.post(fuseki_url, data=sparql_query, headers=headers, timeout=10)
+        # Encode the query as UTF-8
+        response = requests.post(
+            fuseki_url, 
+            data=sparql_query.encode('utf-8'), 
+            headers=headers, 
+            timeout=10
+        )
         response.raise_for_status()
         return response.json()
     

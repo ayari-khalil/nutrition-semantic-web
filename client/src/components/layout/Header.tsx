@@ -9,10 +9,9 @@ import {
   User,
   Menu,
   X,
-  Leaf,
-  Cpu,
-  Database
+  ChevronDown
 } from 'lucide-react';
+import { ThemeToggle } from '../ui/ThemeToggle';
 
 export interface HeaderProps {
   className?: string;
@@ -23,31 +22,87 @@ export const Header: React.FC<HeaderProps> = ({ className = '', sticky = false }
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isQueryOpen, setIsQueryOpen] = useState(false);
 
   const handleNavigate = (path: string) => {
     navigate(path);
     setIsMenuOpen(false);
+    setIsQueryOpen(false);
+    setIsProfileOpen(false);
   };
 
   return (
     <header className={`w-full ${sticky ? 'sticky top-0 z-50' : ''} ${className}`}>
-      <nav className="bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 shadow-2xl">
+      <nav className="bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 dark:from-emerald-800 dark:via-teal-800 dark:to-emerald-900 shadow-2xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-3 cursor-pointer" onClick={() => handleNavigate('/')}>
+            <div className="flex items-center gap-3 cursor-pointer" onClick={() => handleNavigate('/Home')}>
               <Utensils className="w-8 h-8 text-white" />
               <span className="text-white text-2xl font-bold">NutritionGO</span>
             </div>
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center gap-2">
-              <button
-                onClick={() => handleNavigate('/')}
-                className="flex items-center gap-2 px-4 py-2 text-white hover:bg-white/20 rounded-lg transition-colors"
-              >
-                <Home className="w-5 h-5" />
-                <span>Query</span>
-              </button>
+              
+              {/* Query Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={() => setIsQueryOpen(!isQueryOpen)}
+                  className="flex items-center gap-2 px-4 py-2 text-white hover:bg-white/20 rounded-lg transition-colors"
+                >
+                  <Home className="w-5 h-5" />
+                  <span>Query</span>
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      isQueryOpen ? 'rotate-180' : ''
+                    }`}
+                  />
+                </button>
+
+                {isQueryOpen && (
+                  <>
+                    {/* Overlay to close on outside click */}
+                    <div
+                      className="fixed inset-0 z-10"
+                      onClick={() => setIsQueryOpen(false)}
+                    />
+                    <div className="absolute left-0 mt-2 w-52 bg-white dark:bg-gray-800 rounded-lg shadow-xl z-20 overflow-hidden">
+                      <button
+                        onClick={() => handleNavigate('/')}
+                        className="w-full px-4 py-3 text-left text-gray-700 dark:text-gray-200 hover:bg-emerald-50 dark:hover:bg-gray-700 transition-colors"
+                      >
+                        Query Page
+                      </button>
+                      <hr className="border-gray-200 dark:border-gray-700" />
+                      <button
+                        onClick={() => handleNavigate('/users')}
+                        className="w-full px-4 py-3 text-left text-gray-700 dark:text-gray-200 hover:bg-emerald-50 dark:hover:bg-gray-700 transition-colors"
+                      >
+                        Users CRUD
+                      </button>
+                      <button
+                        onClick={() => handleNavigate('/diets')}
+                        className="w-full px-4 py-3 text-left text-gray-700 dark:text-gray-200 hover:bg-emerald-50 dark:hover:bg-gray-700 transition-colors"
+                      >
+                        Diets CRUD
+                      </button>
+                      <button
+                        onClick={() => handleNavigate('/nutrients')}
+                        className="w-full px-4 py-3 text-left text-gray-700 dark:text-gray-200 hover:bg-emerald-50 dark:hover:bg-gray-700 transition-colors"
+                      >
+                        Nutrients CRUD
+                      </button>
+                      <button
+                        onClick={() => handleNavigate('/foods')}
+                        className="w-full px-4 py-3 text-left text-gray-700 dark:text-gray-200 hover:bg-emerald-50 dark:hover:bg-gray-700 transition-colors"
+                      >
+                        Foods CRUD
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+
               <button
                 onClick={() => handleNavigate('/recipes')}
                 className="flex items-center gap-2 px-4 py-2 text-white hover:bg-white/20 rounded-lg transition-colors"
@@ -62,6 +117,11 @@ export const Header: React.FC<HeaderProps> = ({ className = '', sticky = false }
                 <LayoutDashboard className="w-5 h-5" />
                 <span>Dashboard</span>
               </button>
+
+              {/* Theme Toggle */}
+              <div className="ml-2">
+                <ThemeToggle />
+              </div>
 
               <button className="relative p-2 text-white hover:bg-white/20 rounded-lg transition-colors ml-2">
                 <Bell className="w-6 h-6" />
@@ -85,15 +145,15 @@ export const Header: React.FC<HeaderProps> = ({ className = '', sticky = false }
                       className="fixed inset-0 z-10"
                       onClick={() => setIsProfileOpen(false)}
                     />
-                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl z-20 overflow-hidden">
-                      <button className="w-full px-4 py-3 text-left text-gray-700 hover:bg-emerald-50 transition-colors">
+                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl z-20 overflow-hidden">
+                      <button className="w-full px-4 py-3 text-left text-gray-700 dark:text-gray-200 hover:bg-emerald-50 dark:hover:bg-gray-700 transition-colors">
                         Profile
                       </button>
-                      <button className="w-full px-4 py-3 text-left text-gray-700 hover:bg-emerald-50 transition-colors">
+                      <button className="w-full px-4 py-3 text-left text-gray-700 dark:text-gray-200 hover:bg-emerald-50 dark:hover:bg-gray-700 transition-colors">
                         Settings
                       </button>
-                      <hr className="border-gray-200" />
-                      <button className="w-full px-4 py-3 text-left text-red-600 hover:bg-red-50 transition-colors">
+                      <hr className="border-gray-200 dark:border-gray-700" />
+                      <button className="w-full px-4 py-3 text-left text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
                         Logout
                       </button>
                     </div>
@@ -114,13 +174,59 @@ export const Header: React.FC<HeaderProps> = ({ className = '', sticky = false }
           {/* Mobile Menu Items */}
           {isMenuOpen && (
             <div className="md:hidden py-4 space-y-2">
-              <button
-                onClick={() => handleNavigate('/')}
-                className="w-full flex items-center gap-2 px-4 py-2 text-white hover:bg-white/20 rounded-lg transition-colors"
-              >
-                <Home className="w-5 h-5" />
-                <span>Query</span>
-              </button>
+              {/* Query Dropdown for Mobile */}
+              <div className="px-4">
+                <button
+                  onClick={() => setIsQueryOpen(!isQueryOpen)}
+                  className="w-full flex items-center justify-between text-white px-4 py-2 hover:bg-white/20 rounded-lg transition-colors"
+                >
+                  <span className="flex items-center gap-2">
+                    <Home className="w-5 h-5" />
+                    Query
+                  </span>
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      isQueryOpen ? 'rotate-180' : ''
+                    }`}
+                  />
+                </button>
+
+                {isQueryOpen && (
+                  <div className="mt-2 ml-6 space-y-1">
+                    <button
+                      onClick={() => handleNavigate('/')}
+                      className="w-full text-left text-white/90 hover:text-white px-2 py-1"
+                    >
+                      Query Page
+                    </button>
+                    <button
+                      onClick={() => handleNavigate('/users')}
+                      className="w-full text-left text-white/90 hover:text-white px-2 py-1"
+                    >
+                      Users CRUD
+                    </button>
+                    <button
+                      onClick={() => handleNavigate('/diets')}
+                      className="w-full text-left text-white/90 hover:text-white px-2 py-1"
+                    >
+                      Diets CRUD
+                    </button>
+                    <button
+                      onClick={() => handleNavigate('/nutrients')}
+                      className="w-full text-left text-white/90 hover:text-white px-2 py-1"
+                    >
+                      Nutrients CRUD
+                    </button>
+                    <button
+                      onClick={() => handleNavigate('/foods')}
+                      className="w-full text-left text-white/90 hover:text-white px-2 py-1"
+                    >
+                      Foods CRUD
+                    </button>
+                  </div>
+                )}
+              </div>
+
               <button
                 onClick={() => handleNavigate('/recipes')}
                 className="w-full flex items-center gap-2 px-4 py-2 text-white hover:bg-white/20 rounded-lg transition-colors"
@@ -135,44 +241,17 @@ export const Header: React.FC<HeaderProps> = ({ className = '', sticky = false }
                 <LayoutDashboard className="w-5 h-5" />
                 <span>Dashboard</span>
               </button>
+
+              {/* Theme Toggle for Mobile */}
+              <div className="px-4 py-2">
+                <ThemeToggle />
+              </div>
             </div>
           )}
         </div>
       </nav>
 
-      {/* Header Content */}
-      <div className="bg-gradient-to-br from-white to-emerald-50 border-b border-emerald-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div className="flex-1">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="p-3 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl shadow-lg">
-                  <Leaf className="text-white w-10 h-10" />
-                </div>
-                <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                  NutritionGO
-                </h1>
-              </div>
-
-              <p className="text-gray-600 text-base sm:text-lg mb-4">
-                Posez vos questions sur la nutrition en langage naturel
-              </p>
-
-              <div className="flex flex-wrap gap-3">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 rounded-full border border-emerald-200">
-                  <Cpu className="text-emerald-600 w-4 h-4" />
-                  <span className="text-sm text-emerald-700 font-medium">AI-Powered</span>
-                </div>
-
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-teal-50 rounded-full border border-teal-200">
-                  <Database className="text-teal-600 w-4 h-4" />
-                  <span className="text-sm text-teal-700 font-medium">Semantic Web</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    
     </header>
   );
 };

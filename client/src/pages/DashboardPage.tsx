@@ -224,7 +224,7 @@ SELECT ?activity ?duree ?intensite WHERE {
             </div>
           )}
         </div>
-        <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
+        <div className="bg-white/20 dark:bg-white/10 p-3 rounded-xl backdrop-blur-sm">
           {icon}
         </div>
       </div>
@@ -232,7 +232,7 @@ SELECT ?activity ?duree ?intensite WHERE {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-gray-900 dark:via-emerald-950 dark:to-teal-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8 flex justify-between items-start">
           <div>
@@ -416,8 +416,8 @@ SELECT ?activity ?duree ?intensite WHERE {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 shadow-lg">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">Quick Actions</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg">
+            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Quick Actions</h2>
             <div className="space-y-3">
               {[
                 { title: 'Add New User', icon: <User className="w-5 h-5" />, color: 'from-emerald-500 to-teal-600', subtitle: 'Create a new user profile' },
@@ -427,14 +427,14 @@ SELECT ?activity ?duree ?intensite WHERE {
               ].map((action, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer group"
+                  className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer group"
                 >
                   <div className={`bg-gradient-to-br ${action.color} p-3 rounded-lg text-white group-hover:scale-110 transition-transform`}>
                     {action.icon}
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-gray-800">{action.title}</h3>
-                    <p className="text-sm text-gray-500">{action.subtitle}</p>
+                    <h3 className="font-semibold text-gray-800 dark:text-gray-100">{action.title}</h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{action.subtitle}</p>
                   </div>
                 </div>
               ))}
