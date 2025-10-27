@@ -155,8 +155,7 @@ def execute_sparql(sparql_query, fuseki_url):
     """Execute SPARQL query on Fuseki server"""
     
     headers = {
-        "Content-Type": "application/sparql-query",
-        "Accept": "application/json"
+        "Accept": "application/sparql-results+json"
     }
     
     try:
